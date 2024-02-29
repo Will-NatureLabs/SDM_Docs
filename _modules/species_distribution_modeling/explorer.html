@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>species_distribution_modeling.explorer &mdash; Species Distribution Modeling 01/09/2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=c5a0e6c8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Species Distribution Modeling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main_module.html">main_module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../collection.html">collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../explorer.html">explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modeling.html">modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Species Distribution Modeling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">species_distribution_modeling.explorer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for species_distribution_modeling.explorer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">folium</span>
+<span class="kn">from</span> <span class="nn">folium.plugins</span> <span class="kn">import</span> <span class="n">TimestampedGeoJson</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span> <span class="nn">random</span>   
+<span class="kn">from</span> <span class="nn">species_distribution_modeling.utils</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">species_distribution_modeling</span> <span class="kn">import</span> <span class="n">processing</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">nullcontext</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">mapping</span>
+<span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="kn">import</span> <span class="nn">contextily</span> <span class="k">as</span> <span class="nn">ctx</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">google.colab</span>
+    <span class="n">IN_COLAB</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">IN_COLAB</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">if</span> <span class="n">IN_COLAB</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">files</span>  <span class="c1"># Import only if in Colab</span>
+
+<div class="viewcode-block" id="Explore"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore">[docs]</a><span class="k">class</span> <span class="nc">Explore</span><span class="p">:</span>
+<div class="viewcode-block" id="Explore.__init__"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_data_folder</span><span class="p">,</span> <span class="n">y_data_folder</span><span class="p">,</span> <span class="n">processing_folder</span><span class="p">,</span> <span class="n">model_in_folder</span><span class="p">,</span> <span class="n">model_out_folder</span><span class="p">,</span> <span class="n">utils</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span> <span class="o">=</span> <span class="n">X_data_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span> <span class="o">=</span> <span class="n">y_data_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span> <span class="o">=</span> <span class="n">processing_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span> <span class="o">=</span> <span class="n">model_in_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span> <span class="o">=</span> <span class="n">model_out_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">=</span><span class="n">utils</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded_model</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Explore.create_species_map"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore.create_species_map">[docs]</a>    <span class="k">def</span> <span class="nf">create_species_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_column</span><span class="o">=</span><span class="s1">&#39;Day&#39;</span><span class="p">,</span> <span class="n">lon_column</span><span class="o">=</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">lat_column</span><span class="o">=</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">summarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">endure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;_isPresent&#39;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a map visualization of the presence of different species over time. </span>
+<span class="sd">        Gives insight into the survey pattern and the recordings of the raw data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            species (list, optional): List of species to filter by, case insensitive and returns partial matches. If None, all species are included.</span>
+<span class="sd">            time_column (str, optional): Column name in DataFrame representing time. Defaults to &#39;Day&#39;.</span>
+<span class="sd">            lon_column (str, optional): Column name in DataFrame representing longitude. Defaults to &#39;lon&#39;.</span>
+<span class="sd">            lat_column (str, optional): Column name in DataFrame representing latitude. Defaults to &#39;lat&#39;.</span>
+<span class="sd">            summarize (bool, optional): If True, summarizes the species presence data before plotting. Defaults to False.</span>
+<span class="sd">            endure (bool, optional): If True, no duration is set for the animation. If False, a duration of &#39;P1D&#39; is set. Defaults to True.</span>
+<span class="sd">            verbose (bool, optional): If True, prints debug information. Defaults to True.</span>
+<span class="sd">            pattern (str, optional): String pattern used to identify columns containing species presence information. Defaults to &#39;_isPresent&#39;.</span>
+<span class="sd">            download (bool, optional): If True, the generated map will be downloaded as an HTML file. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            folium.Map: A Folium map object with the presence of different species visualized.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; create_species_map(species=[&#39;Eleutherodactylus_coqui&#39;, &#39;Margarops_fuscatus&#39;], download=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Suppress all outputs if verbose is False</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">suppress_output</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">verbose</span> <span class="k">else</span> <span class="n">nullcontext</span><span class="p">():</span>
+            <span class="n">proc</span> <span class="o">=</span> <span class="n">processing</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">X_data_folder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">,</span>
+                                    <span class="n">y_data_folder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">,</span>
+                                    <span class="n">processing_folder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">,</span>
+                                    <span class="n">model_in_folder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">,</span> <span class="c1"># Processing_folder/model_in_folder not needed for preprocess_y_data so passing dummy value</span>
+                                    <span class="n">model_out_folder</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">,</span>
+                                    <span class="n">utils</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="p">)</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">s_print</span><span class="p">(</span><span class="s2">&quot;Preparing X datas&quot;</span><span class="p">)</span>
+            
+            <span class="n">X_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">read_X_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">)</span>     
+            <span class="n">X_data</span> <span class="o">=</span> <span class="n">X_data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;NAME&#39;</span><span class="p">:</span> <span class="s1">&#39;site&#39;</span><span class="p">})</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">s_print</span><span class="p">(</span><span class="s2">&quot;Preparing y data&quot;</span><span class="p">)</span>
+            <span class="n">y_data</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">preprocess_y_data</span><span class="p">(</span><span class="n">species_list</span><span class="o">=</span><span class="n">species</span><span class="p">,</span> <span class="n">del_time</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">s_print</span><span class="p">(</span><span class="s2">&quot;Joining X data to y data&quot;</span><span class="p">)</span>
+            <span class="n">merged_df</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">join_X_to_y</span><span class="p">(</span><span class="n">X_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Define dimensions&#39;</span><span class="p">)</span>
+            <span class="n">dimensions</span> <span class="o">=</span> <span class="n">merged_df</span><span class="p">[[</span><span class="n">time_column</span><span class="p">,</span> <span class="n">lon_column</span><span class="p">,</span> <span class="n">lat_column</span><span class="p">]]</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;xy split&#39;</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">species</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">xy_split</span><span class="p">(</span><span class="n">merged_df</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">species</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">s_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filtering data to columns: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">summarize</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span> 
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;summarise is true. df before&#39;</span><span class="p">)</span>
+                <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">reclassify_species</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="n">pattern</span><span class="p">)</span>  
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;df after&#39;</span><span class="p">)</span>   
+                <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+            <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="n">col</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">time_column</span><span class="p">)</span>
+    
+            <span class="nb">map</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">lat_column</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="n">lon_column</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+            <span class="n">unique_species</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">time_column</span><span class="p">,</span> <span class="n">lon_column</span><span class="p">,</span> <span class="n">lat_column</span><span class="p">]]</span>
+            
+            <span class="c1"># Assign colors to species in a deterministic order</span>
+            <span class="n">species_colors</span> <span class="o">=</span> <span class="p">{</span><span class="n">species</span><span class="p">:</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s1">&#39;husl&#39;</span><span class="p">,</span> <span class="n">n_colors</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">unique_species</span><span class="p">))[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_species</span><span class="p">)}</span>
+
+            <span class="c1"># Convert colors to hex format</span>
+            <span class="n">species_colors</span> <span class="o">=</span> <span class="p">{</span><span class="n">species</span><span class="p">:</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="k">for</span> <span class="n">species</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">species_colors</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    
+            <span class="n">geojson</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;FeatureCollection&#39;</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">unique_species</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">species</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">feature</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Feature&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;coordinates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">lon_column</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="n">lat_column</span><span class="p">]]</span>
+                            <span class="p">},</span>
+                            <span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Day&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">),</span>
+                                <span class="s1">&#39;style&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+                                <span class="p">},</span>
+                                <span class="s1">&#39;icon&#39;</span><span class="p">:</span> <span class="s1">&#39;circle&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;iconstyle&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="s1">&#39;fillColor&#39;</span><span class="p">:</span> <span class="n">species_colors</span><span class="p">[</span><span class="n">species</span><span class="p">],</span>
+                                    <span class="s1">&#39;fillOpacity&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+                                    <span class="s1">&#39;stroke&#39;</span><span class="p">:</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="mi">3</span>
+                                <span class="p">}</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                        <span class="n">geojson</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">endure</span><span class="p">:</span>
+                <span class="n">duration</span><span class="o">=</span><span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span> 
+                <span class="n">duration</span><span class="o">=</span><span class="s1">&#39;P1D&#39;</span>
+
+            <span class="n">TimestampedGeoJson</span><span class="p">(</span><span class="n">geojson</span><span class="p">,</span> <span class="n">min_speed</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">max_speed</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">transition_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span> <span class="n">date_options</span><span class="o">=</span><span class="s1">&#39;DD-MM-YYYY&#39;</span><span class="p">,</span> <span class="n">time_slider_drag_update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+
+            <span class="n">folium</span><span class="o">.</span><span class="n">TileLayer</span><span class="p">(</span><span class="s1">&#39;cartodbpositron&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span>
+
+            <span class="n">legend_html</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                &lt;div style=&quot;position: fixed; bottom: 50px; left: 50px; z-index:9999; font-size: 14px; background-color: white;</span>
+<span class="s1">                    padding: 10px; border-radius: 5px; box-shadow: 0 0 5px rgba(0,0,0,0.2);&quot;&gt;</span>
+<span class="s1">                    &lt;h4&gt;Legend&lt;/h4&gt;</span>
+<span class="s1">            &#39;&#39;&#39;</span>
+            <span class="k">for</span> <span class="n">species</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">species_colors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">legend_html</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;p&gt;&lt;span style=&quot;color:</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">&quot;&gt;&amp;#9632;&lt;/span&gt; </span><span class="si">{</span><span class="n">species</span><span class="si">}</span><span class="s1">&lt;/p&gt;&#39;</span>
+            <span class="n">legend_html</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/div&gt;&#39;</span>
+
+            <span class="nb">map</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">legend_html</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">download</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span> 
+                <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;Speciess Observation Map.html&quot;</span>
+                <span class="nb">map</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">map</span></div>
+    
+<div class="viewcode-block" id="Explore.plot_covariance_matrix"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore.plot_covariance_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">plot_covariance_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">text_size</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the covariance matrix of the input dataframe as a heatmap.    </span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        - env_df: pandas.DataFrame, the input dataframe</span>
+<span class="sd">        - figsize: tuple(int, int), the figure size of the heatmap</span>
+<span class="sd">        - text_size: int, the text size of the annotations in the heatmap</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        - None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Covariance matrix</span>
+        <span class="n">cov_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">cov</span><span class="p">()</span>
+
+        <span class="c1"># Create the heatmap with smaller text size</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cov_matrix</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">text_size</span><span class="p">})</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Covariance Matrix&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Explore.plot_missing_values_heatmap"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore.plot_missing_values_heatmap">[docs]</a>    <span class="k">def</span> <span class="nf">plot_missing_values_heatmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_data_folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots a heatmap of missing values in the input dataframe.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        - class_df: pandas.DataFrame, the input dataframe</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">        - None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">X_data_folder</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">X_data_folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span>
+        
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">read_X_data</span><span class="p">(</span><span class="n">X_data_folder</span><span class="p">)</span>
+        <span class="c1"># Create a heatmap of missing values</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ticks&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Missing&#39;</span><span class="p">})</span>
+
+        <span class="c1"># Label the x-axis and y-axis</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Columns&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Rows&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Display the plots</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Explore.display_value_counts"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore.display_value_counts">[docs]</a>    <span class="k">def</span> <span class="nf">display_value_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the frequency of unique values in a specific column.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            df (pd.DataFrame): DataFrame to be explored.</span>
+<span class="sd">            column (str): Column for which value counts should be displayed.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.Series: Frequency of unique values in the specified column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Explore.get_unique_values"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore.get_unique_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_unique_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the unique values in a specific column.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            df (pd.DataFrame): DataFrame to be explored.</span>
+<span class="sd">            column (str): Column for which unique values should be displayed.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Unique values in the specified column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Explore.plot_histogram"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore.plot_histogram">[docs]</a>    <span class="k">def</span> <span class="nf">plot_histogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots a histogram for a specific column.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            df (pd.DataFrame): DataFrame to be explored.</span>
+<span class="sd">            column (str): Column for which histogram should be plotted.</span>
+<span class="sd">            bins (int, optional): Number of bins for the histogram. Defaults to 10.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Histogram of </span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Explore.boxplot_all_columns"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.Explore.boxplot_all_columns">[docs]</a>    <span class="k">def</span> <span class="nf">boxplot_all_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">figsize_per_plot</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates box plots for all numeric columns of a DataFrame.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df (pd.DataFrame): The DataFrame to plot.</span>
+<span class="sd">            figsize_per_plot (tuple, optional): The figure size for each individual plot. Defaults to (4, 6).</span>
+<span class="sd">            color (str, optional): The color of the box plots. Defaults to &#39;skyblue&#39;.</span>
+<span class="sd">            fontsize (int, optional): The fontsize of the title. Defaults to 12.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None: Displays the box plots.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">            &gt;&gt;&gt; data = {&#39;A&#39;: [1, 2, 3, 4, 5], &#39;B&#39;: [2, 3, 4, 5, 6], &#39;C&#39;: [3, 4, 5, 6, 7]}</span>
+<span class="sd">            &gt;&gt;&gt; df = pd.DataFrame(data)</span>
+<span class="sd">            &gt;&gt;&gt; boxplot_all_columns(df)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">numeric_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span>
+        <span class="n">total_plots</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">numeric_cols</span><span class="p">)</span>
+        <span class="n">total_height</span> <span class="o">=</span> <span class="n">total_plots</span> <span class="o">*</span> <span class="n">figsize_per_plot</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">total_plots</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figsize_per_plot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">total_height</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">total_plots</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">axs</span> <span class="o">=</span> <span class="p">[</span><span class="n">axs</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">numeric_cols</span><span class="p">):</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="test_boxplot_all_columns"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.test_boxplot_all_columns">[docs]</a><span class="k">def</span> <span class="nf">test_boxplot_all_columns</span><span class="p">(</span><span class="n">explorer_instance</span><span class="p">,</span> <span class="n">mock_df</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s1">&#39;matplotlib.pyplot.show&#39;</span><span class="p">):</span>
+        <span class="n">explorer_instance</span><span class="o">.</span><span class="n">boxplot_all_columns</span><span class="p">(</span><span class="n">mock_df</span><span class="p">,</span> <span class="n">figsize_per_plot</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_fignums</span><span class="p">()</span>  <span class="c1"># check if a figure exists</span>
+    <span class="k">assert</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">has_data</span><span class="p">()</span>  <span class="c1"># check if plot has data   </span></div>
+
+<div class="viewcode-block" id="plot_gdf"><a class="viewcode-back" href="../../explorer.html#species_distribution_modeling.explorer.plot_gdf">[docs]</a><span class="k">def</span> <span class="nf">plot_gdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">basemap</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">OpenStreetMap</span><span class="o">.</span><span class="n">Mapnik</span><span class="p">):</span>
+
+  <span class="c1"># Convert CRS to Web Mercator (epsg=3857) for compatibility with contextily basemaps</span>
+  <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">3857</span><span class="p">)</span>
+
+  <span class="c1"># Plot the GeoDataFrame</span>
+  <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+  <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Add basemap</span>
+  <span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">basemap</span><span class="p">)</span>
+
+  <span class="c1"># Adjust the plot limits to the bounds of the geodataframe</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Will Armstrong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

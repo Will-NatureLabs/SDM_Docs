@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils &mdash; Species Distribution Modeling 01/09/2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=c5a0e6c8"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="modeling" href="modeling.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Species Distribution Modeling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main_module.html">main_module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collection.html">collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explorer.html">explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modeling.html">modeling</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#species_distribution_modeling.utils.utils"><code class="docutils literal notranslate"><span class="pre">utils</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.X_data_folder"><code class="docutils literal notranslate"><span class="pre">utils.X_data_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.y_data_folder"><code class="docutils literal notranslate"><span class="pre">utils.y_data_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.processing_folder"><code class="docutils literal notranslate"><span class="pre">utils.processing_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.model_in_folder"><code class="docutils literal notranslate"><span class="pre">utils.model_in_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.model_out_folder"><code class="docutils literal notranslate"><span class="pre">utils.model_out_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.__init__"><code class="docutils literal notranslate"><span class="pre">utils.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.s_print"><code class="docutils literal notranslate"><span class="pre">utils.s_print()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.read_X_data"><code class="docutils literal notranslate"><span class="pre">utils.read_X_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.df_to_gdf_point"><code class="docutils literal notranslate"><span class="pre">utils.df_to_gdf_point()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.suppress_output"><code class="docutils literal notranslate"><span class="pre">utils.suppress_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.ensure_path_exists"><code class="docutils literal notranslate"><span class="pre">utils.ensure_path_exists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.reclassify_species"><code class="docutils literal notranslate"><span class="pre">utils.reclassify_species()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.utils.utils.display_tif_files"><code class="docutils literal notranslate"><span class="pre">utils.display_tif_files()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Species Distribution Modeling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">utils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-species_distribution_modeling.utils">
+<span id="utils"></span><h1>utils<a class="headerlink" href="#module-species_distribution_modeling.utils" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">species_distribution_modeling.utils.</span></span><span class="sig-name descname"><span class="pre">utils</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils" title="Permalink to this definition"></a></dt>
+<dd><p>Utility class containing helper functions for use across all modules
+and at various stages in the species distribution modeling pipeline.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.X_data_folder">
+<span class="sig-name descname"><span class="pre">X_data_folder</span></span><a class="headerlink" href="#species_distribution_modeling.utils.utils.X_data_folder" title="Permalink to this definition"></a></dt>
+<dd><p>The folder containing explanatory variable data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.y_data_folder">
+<span class="sig-name descname"><span class="pre">y_data_folder</span></span><a class="headerlink" href="#species_distribution_modeling.utils.utils.y_data_folder" title="Permalink to this definition"></a></dt>
+<dd><p>The folder containing species observation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.processing_folder">
+<span class="sig-name descname"><span class="pre">processing_folder</span></span><a class="headerlink" href="#species_distribution_modeling.utils.utils.processing_folder" title="Permalink to this definition"></a></dt>
+<dd><p>The folder containing intermediate processing files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.model_in_folder">
+<span class="sig-name descname"><span class="pre">model_in_folder</span></span><a class="headerlink" href="#species_distribution_modeling.utils.utils.model_in_folder" title="Permalink to this definition"></a></dt>
+<dd><p>The folder for model input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.model_out_folder">
+<span class="sig-name descname"><span class="pre">model_out_folder</span></span><a class="headerlink" href="#species_distribution_modeling.utils.utils.model_out_folder" title="Permalink to this definition"></a></dt>
+<dd><p>The folder for model output data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes the utils class with directory settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_data_folder</strong> (<em>str</em>) – The folder containing explanatory variable data.</p></li>
+<li><p><strong>y_data_folder</strong> (<em>str</em>) – The folder containing species observation data.</p></li>
+<li><p><strong>processing_folder</strong> (<em>str</em>) – The folder containing intermediate processing files.</p></li>
+<li><p><strong>model_in_folder</strong> (<em>str</em>) – The folder for model input data.</p></li>
+<li><p><strong>model_out_folder</strong> (<em>str</em>) – The folder for model output data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.s_print">
+<span class="sig-name descname"><span class="pre">s_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils.s_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils.s_print" title="Permalink to this definition"></a></dt>
+<dd><p>Prints text with additional line spacing for easier readability in Colab.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*args</strong> – Variable length argument list to be printed.</p></li>
+<li><p><strong>**kwargs</strong> – Arbitrary keyword arguments for Python’s built-in print function.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.read_X_data">
+<span class="sig-name descname"><span class="pre">read_X_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils.read_X_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils.read_X_data" title="Permalink to this definition"></a></dt>
+<dd><p>Reads the explanatory variable data from a CSV file located in the specified folder.</p>
+<p>This function expects exactly one CSV file in the given folder. It reads the CSV into a pandas DataFrame.
+If the folder contains more or less than one CSV file, an error message is displayed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_data_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – The folder path where the CSV file is located. Defaults to self.X_data_folder.</p></li>
+<li><p><strong>columns</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – A list of column names to read from the CSV file.
+If None, all columns will be read. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The DataFrame containing the data read from the CSV file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If the number of CSV files in the folder is not exactly 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.df_to_gdf_point">
+<span class="sig-name descname"><span class="pre">df_to_gdf_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lon'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:4326'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils.df_to_gdf_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils.df_to_gdf_point" title="Permalink to this definition"></a></dt>
+<dd><p>Converts a pandas DataFrame to a GeoPandas GeoDataFrame, creating point geometries from latitude and longitude columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – The original pandas DataFrame.</p></li>
+<li><p><strong>lon_column</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the longitude column in df. Defaults to ‘lon’.</p></li>
+<li><p><strong>lat_column</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the latitude column in df. Defaults to ‘lat’.</p></li>
+<li><p><strong>crs</strong> (<em>str</em><em>, </em><em>optional</em>) – The coordinate reference system to set for the resulting GeoDataFrame. Defaults to ‘EPSG:4326’.</p></li>
+<li><p><strong>drop_coords</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to drop the original latitude and longitude columns. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converted GeoDataFrame with point geometries.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>gpd.GeoDataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.suppress_output">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">suppress_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils.suppress_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils.suppress_output" title="Permalink to this definition"></a></dt>
+<dd><p>Context manager to suppress standard output, display function, and interactive mode for pyplot.</p>
+<p>This context manager is useful for suppressing print statements, IPython display calls, and
+pyplot plots during the execution of a given code block or function. When the code block
+or function is done, the original behavior is restored.</p>
+<p class="rubric">Example</p>
+<dl class="simple">
+<dt>def example_function():</dt><dd><p>print(“This print statement will be suppressed.”)
+display(“This display call will be suppressed.”)
+plt.plot([0, 1, 2], [0, 1, 4])
+plt.show()</p>
+</dd>
+<dt>with suppress_output():</dt><dd><p>example_function()</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.ensure_path_exists">
+<span class="sig-name descname"><span class="pre">ensure_path_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils.ensure_path_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils.ensure_path_exists" title="Permalink to this definition"></a></dt>
+<dd><p>Ensures that a given path exists. If not, creates the directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The folder path to check or create.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.reclassify_species">
+<span class="sig-name descname"><span class="pre">reclassify_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_isPresent'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils.reclassify_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils.reclassify_species" title="Permalink to this definition"></a></dt>
+<dd><p>Reclassifies species data in a DataFrame into higher taxonomic ranks like genus, family, or order.</p>
+<p>The method uses a mapping from species to class (e.g., genus/family/order) read from a CSV file. The original DataFrame should have columns containing species presence data, identified by a pattern in the column name (default is ‘_isPresent’). The method replaces these species columns with new columns corresponding to the higher-level taxonomic classes and updates the DataFrame accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – The original DataFrame containing species data. Should have columns with a specific pattern in the name to be identified.</p></li>
+<li><p><strong>mapping_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to a CSV file containing the mapping between species and higher-level taxonomic classes. If not provided, the method looks for a ‘species_mapping.csv’ file in the processing folder.</p></li>
+<li><p><strong>pattern</strong> (<em>str</em><em>, </em><em>optional</em>) – The pattern used to identify columns containing species data in the DataFrame. Defaults to ‘_isPresent’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The modified DataFrame with species columns replaced by their higher-level taxonomic classes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the mapping file is not found at the specified or default path.</p></li>
+<li><p><strong>KeyError</strong> – If a species in the DataFrame is not found in the mapping.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.utils.utils.display_tif_files">
+<span class="sig-name descname"><span class="pre">display_tif_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/utils.html#utils.display_tif_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.utils.utils.display_tif_files" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modeling.html" class="btn btn-neutral float-left" title="modeling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Will Armstrong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

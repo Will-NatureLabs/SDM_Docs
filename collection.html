@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>collection &mdash; Species Distribution Modeling 01/09/2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=c5a0e6c8"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="explorer" href="explorer.html" />
+    <link rel="prev" title="main_module" href="main_module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Species Distribution Modeling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main_module.html">main_module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">collection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#species_distribution_modeling.collection.Collect"><code class="docutils literal notranslate"><span class="pre">Collect</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.__init__"><code class="docutils literal notranslate"><span class="pre">Collect.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.__init__"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_image"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.get_image()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_collection"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.get_collection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.calculate_ndvi"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.calculate_ndvi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.extract_values_for_points"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.extract_values_for_points()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_band_names"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.get_band_names()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_band_info"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.get_band_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.select_band"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.select_band()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_projection"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.get_projection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_scale"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.get_scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.plot_points"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.plot_points()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.plot_raster"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.plot_raster()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.export_raster"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.export_raster()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.export_gdf"><code class="docutils literal notranslate"><span class="pre">Collect.EarthEngineTools.export_gdf()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.GBIF_tools"><code class="docutils literal notranslate"><span class="pre">Collect.GBIF_tools</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.GBIF_tools.get_dataset_key"><code class="docutils literal notranslate"><span class="pre">Collect.GBIF_tools.get_dataset_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.GBIF_tools.get_dataset_name"><code class="docutils literal notranslate"><span class="pre">Collect.GBIF_tools.get_dataset_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.collection.Collect.GBIF_tools.download_occurrence_data"><code class="docutils literal notranslate"><span class="pre">Collect.GBIF_tools.download_occurrence_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="explorer.html">explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modeling.html">modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Species Distribution Modeling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">collection</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/collection.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-species_distribution_modeling.collection">
+<span id="collection"></span><h1>collection<a class="headerlink" href="#module-species_distribution_modeling.collection" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">species_distribution_modeling.collection.</span></span><span class="sig-name descname"><span class="pre">Collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utils</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utils</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes the Process class with folder paths and utility class instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_data_folder</strong> (<em>str</em>) – Path to the folder containing explanatory variable data.</p></li>
+<li><p><strong>y_data_folder</strong> (<em>str</em>) – Path to the folder containing species observation data.</p></li>
+<li><p><strong>processing_folder</strong> (<em>str</em>) – Path to the folder used for storing processed data.</p></li>
+<li><p><strong>model_in_folder</strong> (<em>str</em>) – Path to the folder used for storing model input data.</p></li>
+<li><p><strong>model_out_folder</strong> (<em>str</em>) – Path to the folder used for storing model output data.</p></li>
+<li><p><strong>utils</strong> (<a class="reference internal" href="utils.html#species_distribution_modeling.utils.utils" title="species_distribution_modeling.utils.utils"><em>utils</em></a>) – An instance of the utility class for common functionalities.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments, if any.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EarthEngineTools</span></span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.get_image">
+<span class="sig-name descname"><span class="pre">get_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.get_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.get_collection">
+<span class="sig-name descname"><span class="pre">get_collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aggregation_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.get_collection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_collection" title="Permalink to this definition"></a></dt>
+<dd><p>Fetches and aggregates a collection of images from Google Earth Engine over a given date range,
+spatially filters the collection to the specified geometry, and applies an aggregation method.
+Defaults to using the past 2 years of data if start_date and end_date are not provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection_id</strong> (<em>str</em>) – The ID of the Earth Engine image collection to use.</p></li>
+<li><p><strong>start_date</strong> (<em>str</em><em>, </em><em>optional</em>) – The start date for the image collection filter (inclusive), formatted as ‘YYYY-MM-DD’.
+Defaults to two years before the current date if not provided.</p></li>
+<li><p><strong>end_date</strong> (<em>str</em><em>, </em><em>optional</em>) – The end date for the image collection filter (inclusive), formatted as ‘YYYY-MM-DD’.
+Defaults to the current date if not provided.</p></li>
+<li><p><strong>filter_geometry</strong> (<em>geopandas.GeoDataFrame</em><em>, </em><em>optional</em>) – A GeoDataFrame specifying the spatial extent to filter the collection. Defaults to None.</p></li>
+<li><p><strong>aggregation_method</strong> (<em>str</em><em>, </em><em>optional</em>) – The method used to aggregate images over time. Defaults to ‘mean’.
+Supported methods: ‘mean’, ‘median’, ‘min’, ‘max’, ‘sum’, ‘mosaic’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An Earth Engine image object resulting from the aggregated collection.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ee.Image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.calculate_ndvi">
+<span class="sig-name descname"><span class="pre">calculate_ndvi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nir_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B5'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">red_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'B4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.calculate_ndvi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.calculate_ndvi" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the Normalized Difference Vegetation Index (NDVI) for the image stored in this instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nir_band</strong> (<em>str</em>) – The name of the Near Infrared (NIR) band in the image.</p></li>
+<li><p><strong>red_band</strong> (<em>str</em>) – The name of the Red band in the image.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The instance itself with the NDVI image stored, accessible via self.image.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self with NDVI image</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.extract_values_for_points">
+<span class="sig-name descname"><span class="pre">extract_values_for_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.extract_values_for_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.extract_values_for_points" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts values for points from the Earth Engine image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>point_data</strong> (<em>GeoDataFrame</em>) – A GeoDataFrame containing point geometries.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A GeoDataFrame with the extracted values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>GeoDataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.get_band_names">
+<span class="sig-name descname"><span class="pre">get_band_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.get_band_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_band_names" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.get_band_info">
+<span class="sig-name descname"><span class="pre">get_band_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.get_band_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_band_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.select_band">
+<span class="sig-name descname"><span class="pre">select_band</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">band_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.select_band"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.select_band" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.get_projection">
+<span class="sig-name descname"><span class="pre">get_projection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.get_projection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_projection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.get_scale">
+<span class="sig-name descname"><span class="pre">get_scale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.get_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.get_scale" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.plot_points">
+<span class="sig-name descname"><span class="pre">plot_points</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.plot_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.plot_points" title="Permalink to this definition"></a></dt>
+<dd><p>Plots a GeoDataFrame of points on a Folium map with a Google Satellite Hybrid basemap.</p>
+<p>Parameters:
+- gdf: GeoDataFrame containing the points to plot.
+- initial_location: Tuple of (lat, lon) for the initial map center. If None, the center of the GDF points is used.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.plot_raster">
+<span class="sig-name descname"><span class="pre">plot_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_band_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.plot_raster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.plot_raster" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.export_raster">
+<span class="sig-name descname"><span class="pre">export_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GeoTIFF'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.export_raster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.export_raster" title="Permalink to this definition"></a></dt>
+<dd><p>Export the raster image to the X_data_folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em>) – The name of the exported file without extension.</p></li>
+<li><p><strong>file_format</strong> (<em>str</em><em>, </em><em>optional</em>) – The file format for export, default is ‘GeoTIFF’.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.EarthEngineTools.export_gdf">
+<span class="sig-name descname"><span class="pre">export_gdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.EarthEngineTools.export_gdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.EarthEngineTools.export_gdf" title="Permalink to this definition"></a></dt>
+<dd><p>Export a GeoDataFrame (GDF) to a .pkl file in the specified folder.</p>
+<p>Parameters:
+- gdf: GeoDataFrame to be exported.
+- data_folder: Path to the folder where the .pkl file will be saved.</p>
+<p>Returns:
+- The file path of the saved .pkl file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.GBIF_tools">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GBIF_tools</span></span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.GBIF_tools"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.GBIF_tools" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.GBIF_tools.get_dataset_key">
+<span class="sig-name descname"><span class="pre">get_dataset_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.GBIF_tools.get_dataset_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.GBIF_tools.get_dataset_key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.GBIF_tools.get_dataset_name">
+<span class="sig-name descname"><span class="pre">get_dataset_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.GBIF_tools.get_dataset_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.GBIF_tools.get_dataset_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.collection.Collect.GBIF_tools.download_occurrence_data">
+<span class="sig-name descname"><span class="pre">download_occurrence_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">continent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basisOfRecord</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">licence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasetKey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datasetName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/collection.html#Collect.GBIF_tools.download_occurrence_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.collection.Collect.GBIF_tools.download_occurrence_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="main_module.html" class="btn btn-neutral float-left" title="main_module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="explorer.html" class="btn btn-neutral float-right" title="explorer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Will Armstrong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

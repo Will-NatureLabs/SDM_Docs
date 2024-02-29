@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>species_distribution_modeling.main_module &mdash; Species Distribution Modeling 01/09/2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=c5a0e6c8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Species Distribution Modeling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main_module.html">main_module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../collection.html">collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../explorer.html">explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modeling.html">modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Species Distribution Modeling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">species_distribution_modeling.main_module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for species_distribution_modeling.main_module</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">.explorer</span> <span class="kn">import</span> <span class="n">Explore</span>
+<span class="kn">from</span> <span class="nn">.processing</span> <span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="nn">.modeling</span> <span class="kn">import</span> <span class="n">Modeling</span> 
+<span class="kn">from</span> <span class="nn">.collection</span> <span class="kn">import</span> <span class="n">Collect</span> 
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">utils</span>
+
+<div class="viewcode-block" id="SpeciesDistributionModeling"><a class="viewcode-back" href="../../main_module.html#species_distribution_modeling.main_module.SpeciesDistributionModeling">[docs]</a><span class="k">class</span> <span class="nc">SpeciesDistributionModeling</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class acts as an entry point to the species_distribution_modeling module. </span>
+<span class="sd">    Upon initialisation, it creates a new project, setting up the folder structure inside of the base_folder.</span>
+
+<span class="sd">    It also creates instances of each submodule and passes utils to each of the three main modules.</span>
+<span class="sd">    This grants them easy access to the helper functions inside utils through their self.utils attribute. </span>
+
+<span class="sd">    The three core modules:</span>
+<span class="sd">        1. Explorer</span>
+<span class="sd">        2. Processing</span>
+<span class="sd">        3. Modeling</span>
+<span class="sd">    </span>
+<span class="sd">    Finally, it assigns the paths of each of the project&#39;s folders to self attributes, </span>
+<span class="sd">    allowing each module to use predetermined paths as defaults to streamline workflows.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        base_folder (str): The base folder where all data and outputs will be stored.</span>
+<span class="sd">        X_data_folder (str): The folder containing explanatory variable data.</span>
+<span class="sd">        y_data_folder (str): The folder containing species observation data.</span>
+<span class="sd">        processing_folder (str): The folder containing intermediate processing files.</span>
+<span class="sd">        model_in_folder (str): The folder for model input data.</span>
+<span class="sd">        model_out_folder (str): The folder for model output data.</span>
+<span class="sd">        utils (Utils): An instance of the utils module.</span>
+<span class="sd">        explorer (Explore): An instance of the Explore module.</span>
+<span class="sd">        processing (Process): An instance of the Process module.</span>
+<span class="sd">        modeling (Modeling): An instance of the Modeling module.</span>
+<span class="sd">        subdirs (list of str): A list containing all subdirectories.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SpeciesDistributionModeling.__init__"><a class="viewcode-back" href="../../main_module.html#species_distribution_modeling.main_module.SpeciesDistributionModeling.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_folder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the SpeciesDistributionModeling class with directory settings and module instances.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            base_folder (str): The base folder where all data and outputs will be stored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create a folder structure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_folder</span> <span class="o">=</span> <span class="n">base_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_folder</span><span class="p">,</span> <span class="s1">&#39;X_data&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_folder</span><span class="p">,</span> <span class="s1">&#39;y_data&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_folder</span><span class="p">,</span> <span class="s1">&#39;processing&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_folder</span><span class="p">,</span> <span class="s1">&#39;model_in&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_folder</span><span class="p">,</span> <span class="s1">&#39;model_out&#39;</span><span class="p">)</span> 
+
+        <span class="c1"># Create an instance of the utils module, this is passed to the init of the other modules as it contains helper functions which they all use.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span> <span class="o">=</span> <span class="n">utils</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">)</span>
+
+        <span class="c1"># Create instances of the four core modules</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explorer</span> <span class="o">=</span> <span class="n">Explore</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processing</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeling</span> <span class="o">=</span> <span class="n">Modeling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collector</span> <span class="o">=</span> <span class="n">Collect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="p">)</span>
+        <span class="c1"># Define subdirectories</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subdirs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">]</span>
+
+        <span class="c1"># Create subdirectories</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_subdirs</span><span class="p">()</span>
+
+        <span class="c1"># Display instructions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_instructions</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_subdirs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates required subdirectories for the species distribution modeling pipeline.</span>
+
+<span class="sd">        This method only creates directories if they don&#39;t already exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Only creates subdirectories if they don&#39;t exist</span>
+        <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subdirs</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_folder</span><span class="p">,</span> <span class="n">subdir</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Found existing directory: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Creating new directory: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">s_print</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">Folder structure has been created.</span>
+<span class="s1">Folders can be accessed as attributes from within the module or any of the module classes</span>
+<span class="s1">e.g. SpeciesDistributionModeling.X_data_folder or SpeciesDistributionModeling.explorer.X_data_folder will both work.&#39;&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_display_instructions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Displays instructions on how to populate the data folders for the species distribution modeling pipeline.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Please ensure the following folders are populated:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1. X_data:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Contains the explanatory variable data</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;2. y_data:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Contains the species observation data, separated into folders based on unique processing steps.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;3. [optional] processing:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Contains the species mapping&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   Note: this can be generated using chatGPT by passing it a list of species and asking for a table containing the respective genus/family/order/class or any other categorisation.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;4. [optional] processing:&quot;</span><span class="p">)</span>  
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Contains the boundary file&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   Note: this is detected automatically if the file name contains </span><span class="se">\&quot;</span><span class="s2">boundary</span><span class="se">\&quot;</span><span class="s2">. This file is used to mask raster files.&quot;</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Please see the </span><span class="se">\&quot;</span><span class="s2">data</span><span class="se">\&quot;</span><span class="s2"> folder for examples of the required data formats.&quot;</span><span class="p">)</span></div>
+
+        
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Will Armstrong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

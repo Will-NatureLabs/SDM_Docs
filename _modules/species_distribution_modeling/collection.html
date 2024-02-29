@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>species_distribution_modeling.collection &mdash; Species Distribution Modeling 01/09/2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=c5a0e6c8"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Species Distribution Modeling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../main_module.html">main_module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../collection.html">collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../explorer.html">explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modeling.html">modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Species Distribution Modeling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">species_distribution_modeling.collection</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for species_distribution_modeling.collection</h1><div class="highlight"><pre>
+<span></span><span class="c1"># imports</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">folium</span> 
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">ee</span>
+<span class="kn">import</span> <span class="nn">folium</span>
+<span class="kn">from</span> <span class="nn">pygbif</span> <span class="kn">import</span> <span class="n">occurrences</span> <span class="k">as</span> <span class="n">occ</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span>
+<span class="kn">from</span> <span class="nn">pygbif</span> <span class="kn">import</span> <span class="n">registry</span>
+<span class="kn">import</span> <span class="nn">geemap</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
+
+
+<div class="viewcode-block" id="Collect"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect">[docs]</a><span class="k">class</span> <span class="nc">Collect</span><span class="p">():</span>
+<div class="viewcode-block" id="Collect.__init__"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_data_folder</span><span class="p">,</span> <span class="n">y_data_folder</span><span class="p">,</span> <span class="n">processing_folder</span><span class="p">,</span> <span class="n">model_in_folder</span><span class="p">,</span> <span class="n">model_out_folder</span><span class="p">,</span> <span class="n">utils</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the Process class with folder paths and utility class instance.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            X_data_folder (str): Path to the folder containing explanatory variable data.</span>
+<span class="sd">            y_data_folder (str): Path to the folder containing species observation data.</span>
+<span class="sd">            processing_folder (str): Path to the folder used for storing processed data.</span>
+<span class="sd">            model_in_folder (str): Path to the folder used for storing model input data.</span>
+<span class="sd">            model_out_folder (str): Path to the folder used for storing model output data.</span>
+<span class="sd">            utils (utils): An instance of the utility class for common functionalities.</span>
+<span class="sd">            **kwargs (dict, optional): Additional keyword arguments, if any.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span> <span class="o">=</span> <span class="n">X_data_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span> <span class="o">=</span> <span class="n">y_data_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span> <span class="o">=</span> <span class="n">processing_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span> <span class="o">=</span> <span class="n">model_in_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span> <span class="o">=</span> <span class="n">model_out_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span> <span class="o">=</span> <span class="n">utils</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded_model</span> <span class="o">=</span> <span class="kc">False</span>   
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_data_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">processing_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_in_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_out_folder</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools">[docs]</a>    <span class="k">class</span> <span class="nc">EarthEngineTools</span><span class="p">:</span>
+<div class="viewcode-block" id="Collect.EarthEngineTools.__init__"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.__init__">[docs]</a>        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="c1"># Authenticate with Earth Engine</span>
+            <span class="n">ee</span><span class="o">.</span><span class="n">Authenticate</span><span class="p">()</span>
+            <span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;agile-fortress-408004&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">point_gdf</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Initialize filter_geometry attribute</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.get_image"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.get_image">[docs]</a>        <span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_geometry</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># Initialize an empty Image for band concatenation</span>
+                <span class="n">combined_image</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                
+                <span class="c1"># Start from the second image (if any) and add its bands to the combined_image</span>
+                <span class="k">for</span> <span class="n">img_url</span> <span class="ow">in</span> <span class="n">images</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">img_url</span><span class="p">)</span>
+                    <span class="n">combined_image</span> <span class="o">=</span> <span class="n">combined_image</span><span class="o">.</span><span class="n">addBands</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If a single image URL is provided, or the list is empty, process it as before</span>
+                <span class="n">combined_image</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="k">if</span> <span class="n">images</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">combined_image</span>
+
+            <span class="k">if</span> <span class="n">filter_geometry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry_centroid</span> <span class="o">=</span> <span class="n">filter_geometry</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">centroid</span>
+
+                <span class="c1"># Check CRS and convert to EPSG:4326 if necessary</span>
+                <span class="n">original_crs</span> <span class="o">=</span> <span class="n">filter_geometry</span><span class="o">.</span><span class="n">crs</span>
+                <span class="k">if</span> <span class="n">original_crs</span> <span class="o">!=</span> <span class="s1">&#39;epsg:4326&#39;</span><span class="p">:</span>
+                    <span class="n">filter_geometry</span> <span class="o">=</span> <span class="n">filter_geometry</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">geopandas_to_ee</span><span class="p">(</span><span class="n">filter_geometry</span><span class="p">)</span>
+                        
+                <span class="c1"># Determine geometry type of the first geometry in the GeoDataFrame</span>
+                <span class="n">first_geom_type</span> <span class="o">=</span> <span class="n">filter_geometry</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">geom_type</span>
+                <span class="k">if</span> <span class="n">first_geom_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Polygon&#39;</span><span class="p">,</span> <span class="s1">&#39;MultiPolygon&#39;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span> 
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;filter_geometry must be polygon.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span></div>
+    
+<div class="viewcode-block" id="Collect.EarthEngineTools.get_collection"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.get_collection">[docs]</a>        <span class="k">def</span> <span class="nf">get_collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collection_id</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_geometry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aggregation_method</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Fetches and aggregates a collection of images from Google Earth Engine over a given date range,</span>
+<span class="sd">            spatially filters the collection to the specified geometry, and applies an aggregation method.</span>
+<span class="sd">            Defaults to using the past 2 years of data if start_date and end_date are not provided.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                collection_id (str): The ID of the Earth Engine image collection to use.</span>
+<span class="sd">                start_date (str, optional): The start date for the image collection filter (inclusive), formatted as &#39;YYYY-MM-DD&#39;.</span>
+<span class="sd">                    Defaults to two years before the current date if not provided.</span>
+<span class="sd">                end_date (str, optional): The end date for the image collection filter (inclusive), formatted as &#39;YYYY-MM-DD&#39;.</span>
+<span class="sd">                    Defaults to the current date if not provided.</span>
+<span class="sd">                filter_geometry (geopandas.GeoDataFrame, optional): A GeoDataFrame specifying the spatial extent to filter the collection. Defaults to None.</span>
+<span class="sd">                aggregation_method (str, optional): The method used to aggregate images over time. Defaults to &#39;mean&#39;.</span>
+<span class="sd">                    Supported methods: &#39;mean&#39;, &#39;median&#39;, &#39;min&#39;, &#39;max&#39;, &#39;sum&#39;, &#39;mosaic&#39;.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                ee.Image: An Earth Engine image object resulting from the aggregated collection.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># Calculate default dates if not provided</span>
+            <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># Today&#39;s date</span>
+            <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">start_date</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="mi">365</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># Two years before today</span>
+
+            <span class="c1"># Load the image collection</span>
+            <span class="n">collection</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="n">collection_id</span><span class="p">)</span>
+
+            <span class="c1"># Filter the collection by date</span>
+            <span class="n">collection</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">filterDate</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span>
+
+            <span class="c1"># Apply the spatial filter if provided</span>
+            <span class="k">if</span> <span class="n">filter_geometry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Check CRS and convert to EPSG:4326 if necessary</span>
+                <span class="n">original_crs</span> <span class="o">=</span> <span class="n">filter_geometry</span><span class="o">.</span><span class="n">crs</span>
+                <span class="k">if</span> <span class="n">original_crs</span> <span class="o">!=</span> <span class="s1">&#39;epsg:4326&#39;</span><span class="p">:</span>
+                    <span class="n">filter_geometry</span> <span class="o">=</span> <span class="n">filter_geometry</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry_centroid</span> <span class="o">=</span> <span class="n">filter_geometry</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">centroid</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">geopandas_to_ee</span><span class="p">(</span><span class="n">filter_geometry</span><span class="p">)</span>
+                <span class="n">collection</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">filterBounds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry</span><span class="p">)</span>
+
+            <span class="c1"># Aggregate the collection based on the specified method</span>
+            <span class="k">if</span> <span class="n">aggregation_method</span> <span class="o">==</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+                <span class="n">aggregated_image</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">aggregation_method</span> <span class="o">==</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span>
+                <span class="n">aggregated_image</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">aggregation_method</span> <span class="o">==</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span>
+                <span class="n">aggregated_image</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">aggregation_method</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
+                <span class="n">aggregated_image</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">aggregation_method</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+                <span class="n">aggregated_image</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">aggregation_method</span> <span class="o">==</span> <span class="s1">&#39;mosaic&#39;</span><span class="p">:</span>
+                <span class="n">aggregated_image</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">mosaic</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported aggregation method. Choose from &#39;mean&#39;, &#39;median&#39;, &#39;min&#39;, &#39;max&#39;, &#39;sum&#39;, &#39;mosaic&#39;.&quot;</span><span class="p">)</span>
+
+            <span class="c1"># If a spatial filter is applied, clip the aggregated image to the geometry</span>
+            <span class="k">if</span> <span class="n">filter_geometry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">aggregated_image</span> <span class="o">=</span> <span class="n">aggregated_image</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">aggregated_image</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span></div>
+        
+<div class="viewcode-block" id="Collect.EarthEngineTools.calculate_ndvi"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.calculate_ndvi">[docs]</a>        <span class="k">def</span> <span class="nf">calculate_ndvi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nir_band</span><span class="o">=</span><span class="s1">&#39;B5&#39;</span><span class="p">,</span> <span class="n">red_band</span><span class="o">=</span><span class="s1">&#39;B4&#39;</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Calculates the Normalized Difference Vegetation Index (NDVI) for the image stored in this instance.</span>
+<span class="sd">            </span>
+<span class="sd">            Args:</span>
+<span class="sd">                nir_band (str): The name of the Near Infrared (NIR) band in the image.</span>
+<span class="sd">                red_band (str): The name of the Red band in the image.</span>
+<span class="sd">            </span>
+<span class="sd">            Returns:</span>
+<span class="sd">                self with NDVI image: The instance itself with the NDVI image stored, accessible via self.image.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># Ensure there is an image to calculate NDVI on</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No image has been loaded. Use get_image or get_collection to load an image first.&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Calculate NDVI</span>
+            <span class="n">ndvi_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">normalizedDifference</span><span class="p">([</span><span class="n">nir_band</span><span class="p">,</span> <span class="n">red_band</span><span class="p">])</span>
+            
+            <span class="k">if</span> <span class="n">plot</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">plot_raster</span><span class="p">(</span><span class="n">filter_band_names</span><span class="o">=</span><span class="p">[</span><span class="n">nir_band</span><span class="p">,</span> <span class="n">red_band</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">ndvi_image</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.extract_values_for_points"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.extract_values_for_points">[docs]</a>        <span class="k">def</span> <span class="nf">extract_values_for_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_data</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Extracts values for points from the Earth Engine image.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                point_data (GeoDataFrame): A GeoDataFrame containing point geometries.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                GeoDataFrame: A GeoDataFrame with the extracted values.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ensuring point data is in WGS 84 (EPSG:4326).&quot;</span><span class="p">)</span>
+            <span class="n">point_data</span> <span class="o">=</span> <span class="n">point_data</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
+
+            <span class="c1"># Convert GeoDataFrame points to Earth Engine feature collection</span>
+            <span class="n">ee_features</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">geopandas_to_ee</span><span class="p">(</span><span class="n">point_data</span><span class="p">,</span> <span class="n">geodesic</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="c1"># Sample the image at the points</span>
+            <span class="n">sampled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">sampleRegions</span><span class="p">(</span><span class="n">collection</span><span class="o">=</span><span class="n">ee_features</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_scale</span><span class="p">()</span><span class="o">.</span><span class="n">getInfo</span><span class="p">(),</span> <span class="n">geometries</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># Get information from the sampled feature collection</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="n">sampled</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+
+            <span class="c1"># Process the information to create a DataFrame</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">]:</span>
+                <span class="n">properties</span> <span class="o">=</span> <span class="n">feature</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">]</span>
+                <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;geometry&#39;</span><span class="p">)</span>  <span class="c1"># Use .get to avoid TypeError if geometry is None</span>
+                <span class="k">if</span> <span class="n">geometry</span><span class="p">:</span>  <span class="c1"># Check if geometry is not None</span>
+                    <span class="n">coordinates</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">[</span><span class="s1">&#39;coordinates&#39;</span><span class="p">]</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="o">**</span><span class="n">properties</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Handle the case where geometry is None</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: A feature&#39;s geometry is None and will be skipped.&quot;</span><span class="p">)</span>
+
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="c1"># Convert the DataFrame to a GeoDataFrame</span>
+                <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">point_gdf</span> <span class="o">=</span> <span class="n">gdf</span>
+                <span class="k">return</span> <span class="n">gdf</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Geodataframe is empty.&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.get_band_names"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.get_band_names">[docs]</a>        <span class="k">def</span> <span class="nf">get_band_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">bandNames</span><span class="p">()</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.get_band_info"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.get_band_info">[docs]</a>        <span class="k">def</span> <span class="nf">get_band_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="s1">&#39;bands&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.select_band"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.select_band">[docs]</a>        <span class="k">def</span> <span class="nf">select_band</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">band_index</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">band_index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.get_projection"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.get_projection">[docs]</a>        <span class="k">def</span> <span class="nf">get_projection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_band</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">projection</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.get_scale"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.get_scale">[docs]</a>        <span class="k">def</span> <span class="nf">get_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_band</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">projection</span><span class="p">()</span><span class="o">.</span><span class="n">nominalScale</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.plot_points"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.plot_points">[docs]</a>        <span class="k">def</span> <span class="nf">plot_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Plots a GeoDataFrame of points on a Folium map with a Google Satellite Hybrid basemap.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">            - gdf: GeoDataFrame containing the points to plot.</span>
+<span class="sd">            - initial_location: Tuple of (lat, lon) for the initial map center. If None, the center of the GDF points is used.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="c1"># Calculate the mean of the points for centering the map</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">unary_union</span><span class="o">.</span><span class="n">centroid</span>
+            <span class="n">initial_location</span> <span class="o">=</span> <span class="p">(</span><span class="n">center</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">center</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+            <span class="c1"># Create the map</span>
+            <span class="n">Map</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">initial_location</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+            <span class="c1"># Add Basemap</span>
+            <span class="n">basemaps</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Google Satellite Hybrid&#39;</span><span class="p">:</span> <span class="n">folium</span><span class="o">.</span><span class="n">TileLayer</span><span class="p">(</span>
+                <span class="n">tiles</span><span class="o">=</span><span class="s1">&#39;https://mt1.google.com/vt/lyrs=s&amp;x=</span><span class="si">{x}</span><span class="s1">&amp;y=</span><span class="si">{y}</span><span class="s1">&amp;z=</span><span class="si">{z}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;Google&#39;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Google Satellite Hybrid&#39;</span><span class="p">,</span>
+                <span class="n">overlay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">control</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)}</span>
+            <span class="n">basemaps</span><span class="p">[</span><span class="s1">&#39;Google Satellite Hybrid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">Map</span><span class="p">)</span>
+
+            <span class="c1"># Plot each point from the GeoDataFrame</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">point_gdf</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
+                    <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="p">],</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">Map</span><span class="p">)</span>
+
+            <span class="c1"># Optionally: Map.save(&#39;map.html&#39;) to save the map to an HTML file</span>
+            <span class="k">return</span> <span class="n">Map</span></div>
+        
+<div class="viewcode-block" id="Collect.EarthEngineTools.plot_raster"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.plot_raster">[docs]</a>        <span class="k">def</span> <span class="nf">plot_raster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_band_names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># Calculate the centroid of the filter_geometry</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Assuming filter_geometry is a GeoDataFrame</span>
+                <span class="n">centroid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry_centroid</span>
+                <span class="n">map_center</span> <span class="o">=</span> <span class="p">[</span><span class="n">centroid</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">centroid</span><span class="o">.</span><span class="n">x</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Default to some global center if no filter_geometry is provided</span>
+                <span class="n">map_center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  
+
+            <span class="c1"># Create the folium map centered on the filter_geometry&#39;s centroid</span>
+            <span class="n">Map</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">map_center</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>  <span class="c1"># Adjust zoom_start as needed for your use case</span>
+
+            <span class="c1"># Add Basemap</span>
+            <span class="n">basemaps</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Google Satellite Hybrid&#39;</span><span class="p">:</span> <span class="n">folium</span><span class="o">.</span><span class="n">TileLayer</span><span class="p">(</span>
+                <span class="n">tiles</span><span class="o">=</span><span class="s1">&#39;https://mt1.google.com/vt/lyrs=s&amp;x=</span><span class="si">{x}</span><span class="s1">&amp;y=</span><span class="si">{y}</span><span class="s1">&amp;z=</span><span class="si">{z}</span><span class="s1">&#39;</span><span class="p">,</span>
+                <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;Google&#39;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Google Satellite Hybrid&#39;</span><span class="p">,</span>
+                <span class="n">overlay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">control</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)}</span>
+            <span class="n">basemaps</span><span class="p">[</span><span class="s1">&#39;Google Satellite Hybrid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">Map</span><span class="p">)</span>
+
+            <span class="c1"># Define a method to add EE image tiles to the map</span>
+            <span class="k">def</span> <span class="nf">addLayer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ee_image_object</span><span class="p">,</span> <span class="n">vis_params</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+                <span class="n">map_id_dict</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">ee_image_object</span><span class="p">)</span><span class="o">.</span><span class="n">getMapId</span><span class="p">(</span><span class="n">vis_params</span><span class="p">)</span>
+                <span class="n">folium</span><span class="o">.</span><span class="n">raster_layers</span><span class="o">.</span><span class="n">TileLayer</span><span class="p">(</span>
+                    <span class="n">tiles</span><span class="o">=</span><span class="n">map_id_dict</span><span class="p">[</span><span class="s1">&#39;tile_fetcher&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">url_format</span><span class="p">,</span>
+                    <span class="n">attr</span><span class="o">=</span><span class="s1">&#39;Map Data &amp;copy; &lt;a href=&quot;https://earthengine.google.com/&quot;&gt;Google Earth Engine&lt;/a&gt;&#39;</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">overlay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">control</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="c1"># Add EE drawing method to folium</span>
+            <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span> <span class="o">=</span> <span class="n">addLayer</span>
+
+            <span class="c1"># Display each band as a layer</span>
+            <span class="n">band_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_band_names</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">filter_band_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">band_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">band</span> <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">band_names</span> <span class="k">if</span> <span class="n">band</span> <span class="ow">in</span> <span class="n">filter_band_names</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">band_names</span><span class="p">:</span>
+                <span class="n">band</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">stats</span> <span class="o">=</span> <span class="n">band</span><span class="o">.</span><span class="n">reduceRegion</span><span class="p">(</span>
+                <span class="n">reducer</span><span class="o">=</span><span class="n">ee</span><span class="o">.</span><span class="n">Reducer</span><span class="o">.</span><span class="n">minMax</span><span class="p">(),</span>
+                <span class="n">geometry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_geometry</span><span class="p">,</span>
+                <span class="n">scale</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                <span class="n">maxPixels</span><span class="o">=</span><span class="mf">1e9</span><span class="p">)</span>
+                
+                <span class="c1"># Extract the min and max values.</span>
+                <span class="n">min_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_min&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+                <span class="n">max_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_max&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+
+                <span class="n">visParams</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="n">min_value</span><span class="p">,</span>
+                <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="n">max_value</span><span class="p">,</span>
+                <span class="s1">&#39;palette&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">]</span>
+                <span class="p">}</span>
+
+                <span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="n">visParams</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+            <span class="n">Map</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">())</span>
+            <span class="n">display</span><span class="p">(</span><span class="n">Map</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Map</span></div>
+
+            
+<div class="viewcode-block" id="Collect.EarthEngineTools.export_raster"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.export_raster">[docs]</a>        <span class="k">def</span> <span class="nf">export_raster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">folder_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;GeoTIFF&#39;</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Export the raster image to the X_data_folder.</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                file_name (str): The name of the exported file without extension.</span>
+<span class="sd">                file_format (str, optional): The file format for export, default is &#39;GeoTIFF&#39;.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">folder_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">folder_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span>
+
+            <span class="n">export_params</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">,</span>
+                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">file_name</span><span class="p">,</span>
+                <span class="s1">&#39;folder&#39;</span><span class="p">:</span> <span class="n">folder_name</span><span class="p">,</span>
+                <span class="s1">&#39;fileNamePrefix&#39;</span><span class="p">:</span> <span class="n">file_name</span><span class="p">,</span>
+                <span class="s1">&#39;scale&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_scale</span><span class="p">()</span><span class="o">.</span><span class="n">getInfo</span><span class="p">(),</span>
+                <span class="s1">&#39;crs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_projection</span><span class="p">()</span><span class="o">.</span><span class="n">getInfo</span><span class="p">(),</span>
+                <span class="s1">&#39;fileFormat&#39;</span><span class="p">:</span> <span class="n">file_format</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="n">task</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">Export</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">toDrive</span><span class="p">(</span><span class="o">**</span><span class="n">export_params</span><span class="p">)</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+            <span class="c1"># Wait for the task to complete</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">wait_for_ee_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exported </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">file_format</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">X_data_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   </div>
+
+<div class="viewcode-block" id="Collect.EarthEngineTools.export_gdf"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.EarthEngineTools.export_gdf">[docs]</a>        <span class="k">def</span> <span class="nf">export_gdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">folder_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Export a GeoDataFrame (GDF) to a .pkl file in the specified folder.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">            - gdf: GeoDataFrame to be exported.</span>
+<span class="sd">            - data_folder: Path to the folder where the .pkl file will be saved.</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">            - The file path of the saved .pkl file.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># Ensure the folder exists</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder_name</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span>
+
+            <span class="c1"># Generate a unique filename based on the current datetime</span>
+            <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">_%H-%M-%S_gdf.pkl&quot;</span><span class="p">)</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_name</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+            <span class="c1"># Export the GDF to a .pkl file</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">point_gdf</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">file_path</span>     </div></div>
+
+<div class="viewcode-block" id="Collect.GBIF_tools"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.GBIF_tools">[docs]</a>    <span class="k">class</span> <span class="nc">GBIF_tools</span><span class="p">():</span>
+<div class="viewcode-block" id="Collect.GBIF_tools.get_dataset_key"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.GBIF_tools.get_dataset_key">[docs]</a>        <span class="k">def</span> <span class="nf">get_dataset_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">):</span>
+            <span class="c1"># Query the GBIF registry to get the dataset key based on the dataset name</span>
+            <span class="n">dataset_search_results</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">dataset_search</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># Extract the dataset key if a result is found</span>
+            <span class="k">if</span> <span class="n">dataset_search_results</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">dataset_search_results</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;key&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset &#39;</span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">&#39; not found.&quot;</span><span class="p">)</span></div>
+            
+<div class="viewcode-block" id="Collect.GBIF_tools.get_dataset_name"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.GBIF_tools.get_dataset_name">[docs]</a>        <span class="k">def</span> <span class="nf">get_dataset_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_key</span><span class="p">):</span>
+            <span class="c1"># GBIF API endpoint for dataset metadata</span>
+            <span class="n">api_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://api.gbif.org/v1/dataset/</span><span class="si">{</span><span class="n">dataset_key</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Send a GET request to the GBIF API</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">api_url</span><span class="p">)</span>
+
+                <span class="c1"># Check if the request was successful (status code 200)</span>
+                <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                    <span class="c1"># Parse the JSON response</span>
+                    <span class="n">dataset_info</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+                    <span class="c1"># Extract the dataset name</span>
+                    <span class="n">dataset_name</span> <span class="o">=</span> <span class="n">dataset_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Dataset name not found&#39;</span><span class="p">)</span>
+
+                    <span class="k">return</span> <span class="n">dataset_name</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An error occurred: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Collect.GBIF_tools.download_occurrence_data"><a class="viewcode-back" href="../../collection.html#species_distribution_modeling.collection.Collect.GBIF_tools.download_occurrence_data">[docs]</a>        <span class="k">def</span> <span class="nf">download_occurrence_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">country</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">continent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">basisOfRecord</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">licence</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasetKey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">datasetName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">map_results</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">export</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="c1"># Build the query parameters</span>
+            <span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">if</span> <span class="n">search</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search</span>
+
+            <span class="k">if</span> <span class="n">geometry</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span>
+
+            <span class="k">if</span> <span class="n">country</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">country</span>
+
+            <span class="k">if</span> <span class="n">continent</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;continent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">continent</span>
+
+            <span class="k">if</span> <span class="n">basisOfRecord</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;basisOfRecord&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">basisOfRecord</span>
+
+            <span class="k">if</span> <span class="n">start_date</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;eventDate[gte]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_date</span>
+
+            <span class="k">if</span> <span class="n">end_date</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;eventDate[lte]&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">end_date</span>
+
+            <span class="k">if</span> <span class="n">datasetKey</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;datasetKey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datasetKey</span>
+
+            <span class="k">if</span> <span class="n">datasetName</span><span class="p">:</span>
+                <span class="n">datasetKey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset_key</span><span class="p">(</span><span class="n">datasetName</span><span class="p">)</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;datasetKey&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datasetKey</span>
+            
+            <span class="k">if</span> <span class="n">licence</span><span class="p">:</span>
+                <span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;licence&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">licence</span>
+
+            <span class="c1"># Perform the search</span>
+            <span class="n">search_results</span> <span class="o">=</span> <span class="n">occ</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="o">**</span><span class="n">query_params</span><span class="p">,</span> <span class="n">spellCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hasGeospatialIssue</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hasCoordinate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># Extract relevant information from the search results</span>
+            <span class="n">occurrence_data</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">search_results</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]:</span>
+                <span class="n">occurrence</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;species_name&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;species&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;Basis of record&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;basisOfRecord&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;latitude&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;decimalLatitude&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;longitude&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;decimalLongitude&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;date_recorded&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;eventDate&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;Dataset Name&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;datasetKey&#39;</span><span class="p">),</span>
+                    <span class="s1">&#39;License&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;license&#39;</span><span class="p">)</span>
+
+                    <span class="c1"># Add more fields as needed</span>
+                <span class="p">}</span>
+                <span class="n">occurrence_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">occurrence</span><span class="p">)</span>
+
+            <span class="c1"># Convert the list of dictionaries to a Pandas DataFrame</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">occurrence_data</span><span class="p">)</span>
+
+            <span class="c1"># Fetch dataset names in bulk</span>
+            <span class="n">dataset_keys</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Dataset Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+            <span class="n">dataset_name_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataset_name</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dataset_keys</span><span class="p">}</span>
+
+            <span class="c1"># Replace dataset keys with names in the DataFrame</span>
+            <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Dataset Name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Dataset Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">dataset_name_mapping</span><span class="p">)</span>
+
+            <span class="c1"># Plot the data on a Folium map</span>
+            <span class="n">map_center</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()]</span>  <span class="c1"># Center the map on the mean coordinates</span>
+
+            <span class="k">if</span> <span class="n">map_results</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">folium_map</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">map_center</span><span class="p">,</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># You can adjust the zoom level as needed</span>
+
+                <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+                    <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
+                        <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]],</span>
+                        <span class="n">popup</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;species_name&#39;</span><span class="p">],</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">folium_map</span><span class="p">)</span>
+
+                <span class="c1"># Save the map as an HTML file or display it</span>
+                <span class="n">folium_map</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;occurrence_map.html&#39;</span><span class="p">)</span>  <span class="c1"># You can change the file name if needed</span>
+
+                <span class="c1"># Create a GeoDataFrame from the DataFrame</span>
+                <span class="n">geometry</span> <span class="o">=</span> <span class="p">[</span><span class="n">Point</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span> <span class="k">for</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">])]</span>
+                <span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="s1">&#39;epsg:4326&#39;</span><span class="p">}</span>  <span class="c1"># WGS84 coordinate system</span>
+
+                <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">folium_map</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">gdf</span></div></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Will Armstrong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

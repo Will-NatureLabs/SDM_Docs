@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>modeling &mdash; Species Distribution Modeling 01/09/2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=c5a0e6c8"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utils" href="utils.html" />
+    <link rel="prev" title="processing" href="processing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Species Distribution Modeling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main_module.html">main_module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collection.html">collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explorer.html">explorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">processing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">modeling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling"><code class="docutils literal notranslate"><span class="pre">Modeling</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.X_data_folder"><code class="docutils literal notranslate"><span class="pre">Modeling.X_data_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.y_data_folder"><code class="docutils literal notranslate"><span class="pre">Modeling.y_data_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.processing_folder"><code class="docutils literal notranslate"><span class="pre">Modeling.processing_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.model_in_folder"><code class="docutils literal notranslate"><span class="pre">Modeling.model_in_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.model_out_folder"><code class="docutils literal notranslate"><span class="pre">Modeling.model_out_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.utils"><code class="docutils literal notranslate"><span class="pre">Modeling.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.loaded_model"><code class="docutils literal notranslate"><span class="pre">Modeling.loaded_model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.__init__"><code class="docutils literal notranslate"><span class="pre">Modeling.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.calculate_alpha"><code class="docutils literal notranslate"><span class="pre">Modeling.calculate_alpha()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d"><code class="docutils literal notranslate"><span class="pre">Modeling.FocalLoss2d</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.gamma"><code class="docutils literal notranslate"><span class="pre">Modeling.FocalLoss2d.gamma</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.alpha"><code class="docutils literal notranslate"><span class="pre">Modeling.FocalLoss2d.alpha</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.epsilon"><code class="docutils literal notranslate"><span class="pre">Modeling.FocalLoss2d.epsilon</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.__init__"><code class="docutils literal notranslate"><span class="pre">Modeling.FocalLoss2d.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.call"><code class="docutils literal notranslate"><span class="pre">Modeling.FocalLoss2d.call()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d"><code class="docutils literal notranslate"><span class="pre">Modeling.WeightedBCELoss2d</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.alpha"><code class="docutils literal notranslate"><span class="pre">Modeling.WeightedBCELoss2d.alpha</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.__init__"><code class="docutils literal notranslate"><span class="pre">Modeling.WeightedBCELoss2d.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.call"><code class="docutils literal notranslate"><span class="pre">Modeling.WeightedBCELoss2d.call()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.hamming_loss"><code class="docutils literal notranslate"><span class="pre">Modeling.hamming_loss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.load_data"><code class="docutils literal notranslate"><span class="pre">Modeling.load_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.load_model"><code class="docutils literal notranslate"><span class="pre">Modeling.load_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.initialize_model"><code class="docutils literal notranslate"><span class="pre">Modeling.initialize_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.log_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Modeling.log_hyperparameters()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.train_model"><code class="docutils literal notranslate"><span class="pre">Modeling.train_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.save_model"><code class="docutils literal notranslate"><span class="pre">Modeling.save_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.plot_feature_importances"><code class="docutils literal notranslate"><span class="pre">Modeling.plot_feature_importances()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.get_predictions"><code class="docutils literal notranslate"><span class="pre">Modeling.get_predictions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.calculate_best_thresholds"><code class="docutils literal notranslate"><span class="pre">Modeling.calculate_best_thresholds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.apply_thresholds"><code class="docutils literal notranslate"><span class="pre">Modeling.apply_thresholds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.calculate_metrics"><code class="docutils literal notranslate"><span class="pre">Modeling.calculate_metrics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.probability_adjusted_simpsons"><code class="docutils literal notranslate"><span class="pre">Modeling.probability_adjusted_simpsons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.shannon_diversity"><code class="docutils literal notranslate"><span class="pre">Modeling.shannon_diversity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.plot_pr_curve"><code class="docutils literal notranslate"><span class="pre">Modeling.plot_pr_curve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.plot_f1_curve"><code class="docutils literal notranslate"><span class="pre">Modeling.plot_f1_curve()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.predict_and_plot_gdf"><code class="docutils literal notranslate"><span class="pre">Modeling.predict_and_plot_gdf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.predict_and_plot_raster"><code class="docutils literal notranslate"><span class="pre">Modeling.predict_and_plot_raster()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.modeling.Modeling.optimize_hyperparameters"><code class="docutils literal notranslate"><span class="pre">Modeling.optimize_hyperparameters()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Species Distribution Modeling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">modeling</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modeling.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-species_distribution_modeling.modeling">
+<span id="modeling"></span><h1>modeling<a class="headerlink" href="#module-species_distribution_modeling.modeling" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">species_distribution_modeling.modeling.</span></span><span class="sig-name descname"><span class="pre">Modeling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utils</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling" title="Permalink to this definition"></a></dt>
+<dd><p>Class for handling various aspects of model training, prediction, evaluation, and visualisation.
+This sub-module is able to create species distribution maps, which are the primary output of the module.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.X_data_folder">
+<span class="sig-name descname"><span class="pre">X_data_folder</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.X_data_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Folder containing the feature data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.y_data_folder">
+<span class="sig-name descname"><span class="pre">y_data_folder</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.y_data_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Folder containing the target/label data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.processing_folder">
+<span class="sig-name descname"><span class="pre">processing_folder</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.processing_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Folder for storing any processed data or related assets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.model_in_folder">
+<span class="sig-name descname"><span class="pre">model_in_folder</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.model_in_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Folder containing pre-trained model(s) or model assets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.model_out_folder">
+<span class="sig-name descname"><span class="pre">model_out_folder</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.model_out_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Folder where trained models will be saved.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.utils">
+<span class="sig-name descname"><span class="pre">utils</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.utils" title="Permalink to this definition"></a></dt>
+<dd><p>Utility object containing helper methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.loaded_model">
+<span class="sig-name descname"><span class="pre">loaded_model</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.loaded_model" title="Permalink to this definition"></a></dt>
+<dd><p>Flag indicating if a model has been loaded into memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">modeling</span> <span class="o">=</span> <span class="n">Modeling</span><span class="p">(</span><span class="s2">&quot;X_data/&quot;</span><span class="p">,</span> <span class="s2">&quot;y_data/&quot;</span><span class="p">,</span> <span class="s2">&quot;processing/&quot;</span><span class="p">,</span> <span class="s2">&quot;model_in/&quot;</span><span class="p">,</span> <span class="s2">&quot;model_out/&quot;</span><span class="p">,</span> <span class="n">utilities</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utils</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.calculate_alpha">
+<span class="sig-name descname"><span class="pre">calculate_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.calculate_alpha"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.calculate_alpha" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates alpha based on species class frequencies in the given DataFrame or the stored y_train.
+This is used to weight the classes in the custom loss functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>DataFrame</strong> (<em>pandas.DataFrame</em><em>, </em><em>optional</em>) – A DataFrame containing species class labels. If None,
+the method will default to self.y_train.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array containing the calculated alpha values for each species class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.FocalLoss2d">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FocalLoss2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'FocalLoss2d'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.FocalLoss2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d" title="Permalink to this definition"></a></dt>
+<dd><p>FocalLoss2d: A custom Keras loss class implementing the Focal Loss for 2D species distribution data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.FocalLoss2d.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.gamma" title="Permalink to this definition"></a></dt>
+<dd><p>The focusing parameter for focal loss.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.FocalLoss2d.alpha">
+<span class="sig-name descname"><span class="pre">alpha</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.alpha" title="Permalink to this definition"></a></dt>
+<dd><p>A tensor containing species class weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.FocalLoss2d.epsilon">
+<span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.epsilon" title="Permalink to this definition"></a></dt>
+<dd><p>A small constant to avoid division by zero or log(0) errors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.FocalLoss2d.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'FocalLoss2d'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.FocalLoss2d.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes the FocalLoss2d object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gamma</strong> (<em>float</em><em>, </em><em>optional</em>) – The focusing parameter. Default is 2.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – A weighting factor for positive species classes in an imbalanced dataset. Default is 0.5.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name for the loss. Default is “FocalLoss2d”.</p></li>
+<li><p><strong>**kwargs</strong> – Arbitrary keyword arguments passed to parent class.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.FocalLoss2d.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.FocalLoss2d.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.FocalLoss2d.call" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the Focal Loss between y_true and y_pred for species distribution data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>tf.Tensor</em>) – A tensor of true species labels.</p></li>
+<li><p><strong>y_pred</strong> (<em>tf.Tensor</em>) – A tensor of predicted species labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tensor representing the Focal Loss value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WeightedBCELoss2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'WeightedBCELoss2d'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.WeightedBCELoss2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d" title="Permalink to this definition"></a></dt>
+<dd><p>A custom Keras loss class implementing the Weighted Binary Cross-Entropy Loss for 2D data.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.alpha">
+<span class="sig-name descname"><span class="pre">alpha</span></span><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.alpha" title="Permalink to this definition"></a></dt>
+<dd><p>Tensor containing the class weight.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'WeightedBCELoss2d'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.WeightedBCELoss2d.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes the WeightedBCELoss2d object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – A weighting factor for the positive class. Default is 0.5.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name for the loss. Default is “WeightedBCELoss2d”.</p></li>
+<li><p><strong>**kwargs</strong> – Arbitrary keyword arguments passed to parent class.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.call">
+<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.WeightedBCELoss2d.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.WeightedBCELoss2d.call" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the Weighted Binary Cross-Entropy Loss between y_true and y_pred.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>tf.Tensor</em>) – A tensor of true binary labels.</p></li>
+<li><p><strong>y_pred</strong> (<em>tf.Tensor</em>) – A tensor of predicted probabilities from a sigmoid function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tensor representing the Weighted Binary Cross-Entropy Loss value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.hamming_loss">
+<span class="sig-name descname"><span class="pre">hamming_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.hamming_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.hamming_loss" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the Hamming loss, which measures the fraction of labels that are incorrectly predicted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>tf.Tensor</em>) – A tensor of true labels.</p></li>
+<li><p><strong>y_pred</strong> (<em>tf.Tensor</em>) – A tensor of predicted labels.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tensor representing the Hamming loss value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tf.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.load_data">
+<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.load_data" title="Permalink to this definition"></a></dt>
+<dd><p>Loads data for the species distribution model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – The directory from where the species distribution data should be loaded.
+If not provided, it defaults to the model_in_folder attribute of the instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the loaded datasets: X_train, X_test, X_val, y_train, y_test, and y_val.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.load_model">
+<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.load_model" title="Permalink to this definition"></a></dt>
+<dd><p>Loads a pre-trained model from the provided directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_folder</strong> (<em>str</em>) – The directory from which the pre-trained model should be loaded.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>If the model is loaded successfully, the <cite>loaded_model</cite> attribute of the instance is set to <cite>True</cite>.
+If the model is not found in the given path, a message is printed to indicate the same.
+Hyperparameters used during training, such as learning rate, optimizer, etc., are also restored along with the model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.initialize_model">
+<span class="sig-name descname"><span class="pre">initialize_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_decision_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relaxation_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity_coefficient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_momentum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.002</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary_crossentropy'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.initialize_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.initialize_model" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes a new TabNet model with the given parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Training data. If not provided, will look for data saved to the model object.</p></li>
+<li><p><strong>y_train</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Training labels. If not provided, will look for data saved to the model object.</p></li>
+<li><p><strong>feature_dim</strong> (<em>int</em><em>, </em><em>optional</em>) – The dimensionality of the hidden layers in TabNet. Default is 512.</p></li>
+<li><p><strong>dim_ratio</strong> (<em>float</em><em>, </em><em>optional</em>) – The ratio for the dimension of output space to feature space. Default is 0.5.</p></li>
+<li><p><strong>num_decision_steps</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of decision steps in the TabNet model. Default is 8.</p></li>
+<li><p><strong>relaxation_factor</strong> (<em>float</em><em>, </em><em>optional</em>) – The relaxation factor for TabNet’s feature selection. Default is 1.0.</p></li>
+<li><p><strong>sparsity_coefficient</strong> (<em>float</em><em>, </em><em>optional</em>) – The sparsity penalty. Default is 0.06.</p></li>
+<li><p><strong>batch_momentum</strong> (<em>float</em><em>, </em><em>optional</em>) – The momentum term for batch normalization. Default is 0.9.</p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em><em>, </em><em>optional</em>) – The learning rate for the optimizer. Default is 0.002.</p></li>
+<li><p><strong>virtual_batch_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The virtual batch size for TabNet’s Ghost Batch Normalization. Default is 32.</p></li>
+<li><p><strong>loss</strong> (<em>str</em><em>, </em><em>optional</em>) – The loss function to use. It could be ‘binary_crossentropy’, ‘focal_loss’, or ‘wBCE’. Default is ‘binary_crossentropy’.</p></li>
+<li><p><strong>**kwargs</strong> – Arbitrary keyword arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>If custom loss functions ‘focal_loss’ or ‘wBCE’ are chosen, the corresponding custom loss classes are utilized.
+The model is initialized with certain regularizations and modifications suited for the multilabel problem and is then compiled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.log_hyperparameters">
+<span class="sig-name descname"><span class="pre">log_hyperparameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hyperparameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.log_hyperparameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.log_hyperparameters" title="Permalink to this definition"></a></dt>
+<dd><p>Logs hyperparameters to a text file in the specified directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hyperparameters</strong> (<em>dict</em>) – Dictionary containing hyperparameters to be logged.</p></li>
+<li><p><strong>output_folder</strong> (<em>str</em>) – Directory where the hyperparameters will be saved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A text file named ‘Hyperparameters.txt’ will be created in the specified directory,
+where each hyperparameter is written on a new line in the format <cite>key = value</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.train_model">
+<span class="sig-name descname"><span class="pre">train_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'best_model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.train_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.train_model" title="Permalink to this definition"></a></dt>
+<dd><p>Trains the TabNet model with provided data and settings, and logs the training progress and feature masks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_name</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the saved best model. Default is ‘best_model’.</p></li>
+<li><p><strong>X_train</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Training data. Defaults to the instance’s attribute if not provided.</p></li>
+<li><p><strong>y_train</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Training labels. Defaults to the instance’s attribute if not provided.</p></li>
+<li><p><strong>X_val</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Validation data. Defaults to the instance’s attribute if not provided.</p></li>
+<li><p><strong>y_val</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Validation labels. Defaults to the instance’s attribute if not provided.</p></li>
+<li><p><strong>output_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory for saving the trained model and logs. Defaults to the instance’s attribute if not provided.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of epochs for training. Default is 3.</p></li>
+<li><p><strong>patience</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of epochs with no improvement after which training will be stopped. Default is 3.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em><em>, </em><em>optional</em>) – The size of batches for training. Default is 32.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function ensures that the model is initialized before training.</p></li>
+<li><p>If the model is loaded from a saved state, feature masks are not generated.</p></li>
+<li><p>Callbacks such as TensorBoard logging, early stopping, and model checkpoints are used during training.</p></li>
+<li><p>The feature masks are saved to the TensorBoard logs.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.save_model">
+<span class="sig-name descname"><span class="pre">save_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'best_model'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.save_model" title="Permalink to this definition"></a></dt>
+<dd><p>Saves a given Keras model to a specified path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>tensorflow.keras.models.Model</em><em>, </em><em>optional</em>) – The Keras model to be saved. If not provided, defaults to the instance’s model.</p></li>
+<li><p><strong>save_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory where the model will be saved. If not provided, defaults to the instance’s output directory.</p></li>
+<li><p><strong>model_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Desired name for the saved model. Default is ‘best_model’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The full path to the saved model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The model will be saved in HDF5 format (with a ‘.h5’ extension).</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.plot_feature_importances">
+<span class="sig-name descname"><span class="pre">plot_feature_importances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_output_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.plot_feature_importances"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.plot_feature_importances" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the feature importances of the model.
+These show which explanatory variables the model considers most important for predicting the presence of the modeled species.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature_mask</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Array representing the feature importances. If not provided, defaults to the instance’s feature mask.</p></li>
+<li><p><strong>model_output_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory where the feature importance plot will be saved. If not provided, defaults to the instance’s model output folder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function assumes a feature mask is available either from the instance or as an argument.</p></li>
+<li><p>The function specifically works for models that provide a feature importance or selection mask.</p></li>
+<li><p>The feature importances plot will be saved as a PNG file.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.get_predictions">
+<span class="sig-name descname"><span class="pre">get_predictions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculate_best_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.get_predictions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.get_predictions" title="Permalink to this definition"></a></dt>
+<dd><p>Predicts the output for a given set of features (X) using the trained model and optionally thresholds the predictions
+to obtain labels (binary classification).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Features to predict the output for. Defaults to the instance’s test set features.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>optional</em>) – True labels for the given features (used for some internal operations). Defaults to the instance’s test set labels.</p></li>
+<li><p><strong>threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability threshold to classify the outputs as 1 or 0 for binary classification. If provided, <cite>calculate_best_thresholds</cite> should be set to False.</p></li>
+<li><p><strong>calculate_best_thresholds</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it calculates the best threshold that maximizes the F1 score for each label. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple containing the following:</dt><dd><ul class="simple">
+<li><p>y_pred_prob (array-like): Predicted probabilities for each class.</p></li>
+<li><p>y_pred_labels (array-like): Predicted labels (binary classification) for each class based on the threshold.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>For multilabel classification, the best threshold for each label will be computed separately.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.calculate_best_thresholds">
+<span class="sig-name descname"><span class="pre">calculate_best_thresholds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_to_maximize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'f1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.calculate_best_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.calculate_best_thresholds" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the best decision thresholds for each class based on a specific metric.</p>
+<p>The function uses the precision-recall curve to find a decision threshold for each class
+that maximizes a given metric - F1 score, precision, or recall. If both precision and
+recall for a class are zero, a default threshold of 0.5 is assigned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>pd.DataFrame</em><em>, </em><em>optional</em>) – Features. If not provided, self.X_val will be used.</p></li>
+<li><p><strong>y</strong> (<em>pd.DataFrame</em><em>, </em><em>optional</em>) – True labels. If not provided, self.y_val will be used.</p></li>
+<li><p><strong>metric_to_maximize</strong> (<em>str</em><em>, </em><em>optional</em>) – Metric to be maximized when choosing the best threshold.
+Must be one of [“f1”, “precision”, “recall”]. Default is “f1”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>AssertionError</strong> – If metric_to_maximize is not one of [“f1”, “precision”, “recall”].</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>A tuple containing two elements:</dt><dd><ul class="simple">
+<li><p>list of float: Best decision thresholds for each class.</p></li>
+<li><p>np.array: An array with the same shape as threshold_y_pred_prob initialized to zeros.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.apply_thresholds">
+<span class="sig-name descname"><span class="pre">apply_thresholds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred_prob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.apply_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.apply_thresholds" title="Permalink to this definition"></a></dt>
+<dd><p>Apply the specified thresholds to the predicted probabilities.</p>
+<p>For each class, labels are assigned based on whether the predicted probability
+for that class is greater than the corresponding threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_pred_prob</strong> (<em>np.array</em>) – 2D array of predicted probabilities for each class.</p></li>
+<li><p><strong>thresholds</strong> (<em>list</em>) – Thresholds for each class.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>2D array of predicted labels for each class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.calculate_metrics">
+<span class="sig-name descname"><span class="pre">calculate_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred_prob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred_labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.calculate_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.calculate_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate metrics for the model’s predictions.</p>
+<p>This function computes various metrics for the model’s predictions, including F1 score,
+precision, recall, ROC AUC, PR AUC, accuracy, and Hamming Loss. Metrics are calculated
+both label-wise and as an overall summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>pd.DataFrame</em><em> or </em><em>pd.Series</em>) – True labels.</p></li>
+<li><p><strong>y_pred_prob</strong> (<em>np.array</em>) – 2D array of predicted probabilities for each class.</p></li>
+<li><p><strong>y_pred_labels</strong> (<em>np.array</em>) – 2D array of predicted labels for each class.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple containing:</dt><dd><ul class="simple">
+<li><p>summary_metrics (pd.DataFrame): Summary metrics for all classes.</p></li>
+<li><p>labelwise_metrics (pd.DataFrame): Metrics for each individual class.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.probability_adjusted_simpsons">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">probability_adjusted_simpsons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">probabilities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.probability_adjusted_simpsons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.probability_adjusted_simpsons" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the Simpson’s biodiversity Index.
+This adjusted index will range from 0 to (1-1/s), where s is the number of species (or categories).
+A higher value indicates greater biodiversity or category diversity.
+This is a common transformation of Simpson’s Index used to make the scale more intuitive, where higher values reflect higher diversity.</p>
+<p>This quantifies diversity in a way that accounts for both richness (number of categories)
+and evenness (how equally members are distributed among categories).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>probabilities</strong> (<em>np.array</em><em> or </em><em>pd.Series</em>) – Probabilities for the distinct categories.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Probability-Adjusted Simpson’s Index.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.shannon_diversity">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shannon_diversity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">probabilities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.shannon_diversity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.shannon_diversity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the Shannon Diversity Index based on a row of probabilities.</p>
+<p>Note: This method is an alternative biodiversity index. It’s not used by default
+as it relies on balanced classes.</p>
+<p>The reason for this caveat is that the Shannon index can be sensitive to rare categories,
+which could skew the measure of diversity if classes are highly imbalanced, which is likely for species observation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>probabilities</strong> (<em>pd.Series</em>) – Probabilities for the distinct categories.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Shannon Diversity Index.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.plot_pr_curve">
+<span class="sig-name descname"><span class="pre">plot_pr_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.plot_pr_curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.plot_pr_curve" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the Precision-Recall curve along with the best F1 score.</p>
+<p>This function takes in the true labels and predicted probabilities and plots the
+Precision-Recall curve. It also highlights the point corresponding to the best F1 score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>pd.DataFrame</em><em> or </em><em>pd.Series</em><em>, </em><em>optional</em>) – True labels. If not provided,
+defaults to self.y_test.</p></li>
+<li><p><strong>y_pred_prob</strong> (<em>np.array</em><em> or </em><em>pd.DataFrame</em><em>, </em><em>optional</em>) – Predicted probabilities for each class.
+If not provided, defaults to self.y_pred_prob if y_true is not provided.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.plot_f1_curve">
+<span class="sig-name descname"><span class="pre">plot_f1_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred_prob</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.plot_f1_curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.plot_f1_curve" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the F1 score as a function of the threshold.</p>
+<p>This function takes in the true labels and predicted probabilities and plots the
+F1 score versus different thresholds. It also highlights the threshold corresponding
+to the best F1 score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> (<em>pd.DataFrame</em><em> or </em><em>pd.Series</em><em>, </em><em>optional</em>) – True labels. If not provided,
+defaults to self.y_test.</p></li>
+<li><p><strong>y_pred_prob</strong> (<em>np.array</em><em> or </em><em>pd.DataFrame</em><em>, </em><em>optional</em>) – Predicted probabilities for each class.
+If not provided, defaults to self.y_pred_prob.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.predict_and_plot_gdf">
+<span class="sig-name descname"><span class="pre">predict_and_plot_gdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gdf_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labelise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biodiversity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:4326'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_best_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.predict_and_plot_gdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.predict_and_plot_gdf" title="Permalink to this definition"></a></dt>
+<dd><p>Reads a GeoPandas DataFrame, scales the features, makes predictions using a trained model,
+post-processes these predictions, and plots the results. Optionally saves the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gdf_path</strong> (<em>str</em>) – Path to the GeoPackage (.GPKG) file.</p></li>
+<li><p><strong>labelise</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, uses labels for plotting. Defaults to False.</p></li>
+<li><p><strong>summarize</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, performs summary operations. Defaults to False.</p></li>
+<li><p><strong>output_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory to save outputs. Defaults to None.</p></li>
+<li><p><strong>processing_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory to find models. Defaults to None.</p></li>
+<li><p><strong>columns</strong> (<em>bool</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – If a list, specifies which columns to use. Defaults to False.</p></li>
+<li><p><strong>biodiversity</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, calculates and plots diversity metrics. Defaults to True.</p></li>
+<li><p><strong>from_crs</strong> (<em>str</em><em>, </em><em>optional</em>) – Initial Coordinate Reference System. Defaults to “EPSG:4326”.</p></li>
+<li><p><strong>to_crs</strong> (<em>str</em><em>, </em><em>optional</em>) – Target Coordinate Reference System for conversion. Defaults to None.</p></li>
+<li><p><strong>ncols</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of columns in the grid for plotting. Defaults to 2.</p></li>
+<li><p><strong>calc_best_thresholds</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, calculates best thresholds for classification. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Contains two GeoDataFrames. The first GeoDataFrame contains the prediction probabilities, and the second contains the prediction labels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the ‘columns’ argument is not a list and is not False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.predict_and_plot_raster">
+<span class="sig-name descname"><span class="pre">predict_and_plot_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raster_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.predict_and_plot_raster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.predict_and_plot_raster" title="Permalink to this definition"></a></dt>
+<dd><p>Reads raster data from a folder, scales the features, makes predictions using a trained model,
+and creates raster output files for each species as well as a species richness raster.
+Note that unlike the sister function predict_and_plot_raster, this function does not take a lon/lat column.
+This is because the coordinates are instead calculated from the centroids of each cell in the raster grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raster_folder</strong> (<em>str</em>) – Path to the folder containing the raster files.</p></li>
+<li><p><strong>processing_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory to find models and scalers. Defaults to the object’s processing_folder attribute.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Side Effects:</dt><dd><ul class="simple">
+<li><p>Creates and saves raster files for each species prediction.</p></li>
+<li><p>Creates and saves a species richness raster.</p></li>
+<li><p>Prints status messages regarding the scaling and exporting of files.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertionError</strong> – If the rasters do not have the same geotransform, CRS, or shape.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Please ensure the raster files all share the same extent and geotransform (this is handled automatically by the interplate_to_raster function).
+Please also ensure that the rasters are in the same CRS as the model’s training data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.modeling.Modeling.optimize_hyperparameters">
+<span class="sig-name descname"><span class="pre">optimize_hyperparameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_trials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs_per_trial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary_crossentropy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/modeling.html#Modeling.optimize_hyperparameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.modeling.Modeling.optimize_hyperparameters" title="Permalink to this definition"></a></dt>
+<dd><p>Optimize the hyperparameters for a machine learning model using Optuna.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_trials</strong> (<em>int</em>) – Number of trials for hyperparameter optimization.</p></li>
+<li><p><strong>epochs_per_trial</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of epochs per trial. Defaults to 20.</p></li>
+<li><p><strong>loss</strong> (<em>str</em><em>, </em><em>optional</em>) – Loss function to use. Defaults to ‘binary_crossentropy’.</p></li>
+<li><p><strong>X_train</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – Training features. Defaults to None.</p></li>
+<li><p><strong>y_train</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – Training labels. Defaults to None.</p></li>
+<li><p><strong>X_val</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – Validation features. Defaults to None.</p></li>
+<li><p><strong>y_val</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – Validation labels. Defaults to None.</p></li>
+<li><p><strong>model_out_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Folder to save optimization study and best parameters. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Best hyperparameters and the Optuna study object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If ‘model_out_folder’ does not exist and is not None.</p></li>
+<li><p><strong>ValueError</strong> – If the training and validation data shapes do not match.</p></li>
+<li><p><strong>Exception</strong> – For other types of errors during optimization.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The function also saves plots related to the optimization in the ‘model_out_folder’.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="processing.html" class="btn btn-neutral float-left" title="processing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Will Armstrong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>processing &mdash; Species Distribution Modeling 01/09/2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=c5a0e6c8"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="modeling" href="modeling.html" />
+    <link rel="prev" title="explorer" href="explorer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Species Distribution Modeling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main_module.html">main_module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collection.html">collection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explorer.html">explorer</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#species_distribution_modeling.processing.Process"><code class="docutils literal notranslate"><span class="pre">Process</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.X_data_folder"><code class="docutils literal notranslate"><span class="pre">Process.X_data_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.y_data_folder"><code class="docutils literal notranslate"><span class="pre">Process.y_data_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.processing_folder"><code class="docutils literal notranslate"><span class="pre">Process.processing_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.model_in_folder"><code class="docutils literal notranslate"><span class="pre">Process.model_in_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.model_out_folder"><code class="docutils literal notranslate"><span class="pre">Process.model_out_folder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.utils"><code class="docutils literal notranslate"><span class="pre">Process.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.loaded_model"><code class="docutils literal notranslate"><span class="pre">Process.loaded_model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.__init__"><code class="docutils literal notranslate"><span class="pre">Process.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.rename_columns"><code class="docutils literal notranslate"><span class="pre">Process.rename_columns()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.plot_missing_data"><code class="docutils literal notranslate"><span class="pre">Process.plot_missing_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.fill_na_kriging"><code class="docutils literal notranslate"><span class="pre">Process.fill_na_kriging()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.fill_na_with_knn"><code class="docutils literal notranslate"><span class="pre">Process.fill_na_with_knn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.check_missing_values"><code class="docutils literal notranslate"><span class="pre">Process.check_missing_values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.preprocess_X_data"><code class="docutils literal notranslate"><span class="pre">Process.preprocess_X_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.interpolate_point_to_raster"><code class="docutils literal notranslate"><span class="pre">Process.interpolate_point_to_raster()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.day_to_datetime"><code class="docutils literal notranslate"><span class="pre">Process.day_to_datetime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.del_time_dimension"><code class="docutils literal notranslate"><span class="pre">Process.del_time_dimension()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.check_balance_na"><code class="docutils literal notranslate"><span class="pre">Process.check_balance_na()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.filter_on_missing"><code class="docutils literal notranslate"><span class="pre">Process.filter_on_missing()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.filter_on_balance"><code class="docutils literal notranslate"><span class="pre">Process.filter_on_balance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.get_csv_paths"><code class="docutils literal notranslate"><span class="pre">Process.get_csv_paths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.preprocess_y_data"><code class="docutils literal notranslate"><span class="pre">Process.preprocess_y_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.join_X_to_y"><code class="docutils literal notranslate"><span class="pre">Process.join_X_to_y()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.fill_na_with_xgboost"><code class="docutils literal notranslate"><span class="pre">Process.fill_na_with_xgboost()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.fill_na_with_avg"><code class="docutils literal notranslate"><span class="pre">Process.fill_na_with_avg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.xy_split"><code class="docutils literal notranslate"><span class="pre">Process.xy_split()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.multi_label_split"><code class="docutils literal notranslate"><span class="pre">Process.multi_label_split()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.balance_dataset_MLSMOTE"><code class="docutils literal notranslate"><span class="pre">Process.balance_dataset_MLSMOTE()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.export_data_to_pickle"><code class="docutils literal notranslate"><span class="pre">Process.export_data_to_pickle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.processing.Process.main_pipeline"><code class="docutils literal notranslate"><span class="pre">Process.main_pipeline()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modeling.html">modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Species Distribution Modeling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">processing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/processing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-species_distribution_modeling.processing">
+<span id="processing"></span><h1>processing<a class="headerlink" href="#module-species_distribution_modeling.processing" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">species_distribution_modeling.processing.</span></span><span class="sig-name descname"><span class="pre">Process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utils</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process" title="Permalink to this definition"></a></dt>
+<dd><p>Handles data preprocessing for species distribution modeling using deep learning.</p>
+<p>The class includes various preprocessing methods, many of which have been combined into a core preprocessing pipeline.</p>
+<p>The functions can also be used individually to perform bespoke processing.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.X_data_folder">
+<span class="sig-name descname"><span class="pre">X_data_folder</span></span><a class="headerlink" href="#species_distribution_modeling.processing.Process.X_data_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Path to the folder containing explanatory variable data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.y_data_folder">
+<span class="sig-name descname"><span class="pre">y_data_folder</span></span><a class="headerlink" href="#species_distribution_modeling.processing.Process.y_data_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Path to the folder containing species observation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.processing_folder">
+<span class="sig-name descname"><span class="pre">processing_folder</span></span><a class="headerlink" href="#species_distribution_modeling.processing.Process.processing_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Path to the folder used for storing processed data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.model_in_folder">
+<span class="sig-name descname"><span class="pre">model_in_folder</span></span><a class="headerlink" href="#species_distribution_modeling.processing.Process.model_in_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Path to the folder used for storing model input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.model_out_folder">
+<span class="sig-name descname"><span class="pre">model_out_folder</span></span><a class="headerlink" href="#species_distribution_modeling.processing.Process.model_out_folder" title="Permalink to this definition"></a></dt>
+<dd><p>Path to the folder used for storing model output data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.utils">
+<span class="sig-name descname"><span class="pre">utils</span></span><a class="headerlink" href="#species_distribution_modeling.processing.Process.utils" title="Permalink to this definition"></a></dt>
+<dd><p>An instance of the utility class for common functionalities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="utils.html#species_distribution_modeling.utils.utils" title="species_distribution_modeling.utils.utils">utils</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.loaded_model">
+<span class="sig-name descname"><span class="pre">loaded_model</span></span><a class="headerlink" href="#species_distribution_modeling.processing.Process.loaded_model" title="Permalink to this definition"></a></dt>
+<dd><p>Flag to indicate if a model is loaded or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utils</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes the Process class with folder paths and utility class instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_data_folder</strong> (<em>str</em>) – Path to the folder containing explanatory variable data.</p></li>
+<li><p><strong>y_data_folder</strong> (<em>str</em>) – Path to the folder containing species observation data.</p></li>
+<li><p><strong>processing_folder</strong> (<em>str</em>) – Path to the folder used for storing processed data.</p></li>
+<li><p><strong>model_in_folder</strong> (<em>str</em>) – Path to the folder used for storing model input data.</p></li>
+<li><p><strong>model_out_folder</strong> (<em>str</em>) – Path to the folder used for storing model output data.</p></li>
+<li><p><strong>utils</strong> (<a class="reference internal" href="utils.html#species_distribution_modeling.utils.utils" title="species_distribution_modeling.utils.utils"><em>utils</em></a>) – An instance of the utility class for common functionalities.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments, if any.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.rename_columns">
+<span class="sig-name descname"><span class="pre">rename_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rename_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.rename_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.rename_columns" title="Permalink to this definition"></a></dt>
+<dd><p>Rename columns of a DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>DataFrame</strong> (<em>pandas.DataFrame</em>) – The input DataFrame with columns to be renamed.</p></li>
+<li><p><strong>rename_dict</strong> (<em>dict</em>) – A dictionary with current column names as keys and desired column names as values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The DataFrame with renamed columns.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.plot_missing_data">
+<span class="sig-name descname"><span class="pre">plot_missing_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">6)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.plot_missing_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.plot_missing_data" title="Permalink to this definition"></a></dt>
+<dd><p>Plot percentage of missing values for each column in a DataFrame.</p>
+<p>The function calculates the percentage of missing values for each column and plots them
+in descending order. Columns with higher percentages of missing values are shown in darker shades.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pandas.DataFrame</em>) – The DataFrame to analyze for missing values.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Size of the resulting plot. Defaults to (10, 6).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function only displays a plot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.fill_na_kriging">
+<span class="sig-name descname"><span class="pre">fill_na_kriging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lon'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lat'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.fill_na_kriging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.fill_na_kriging" title="Permalink to this definition"></a></dt>
+<dd><p>Fill NaN values in a DataFrame using Ordinary Kriging.</p>
+<p>This method performs spatial interpolation on NaN values in the
+provided DataFrame using the Ordinary Kriging technique.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataframe</strong> (<em>pandas.DataFrame</em>) – The input DataFrame with NaN values to interpolate.</p></li>
+<li><p><strong>lon_column</strong> (<em>str</em>) – Name of the column in the DataFrame containing longitudinal coordinates.</p></li>
+<li><p><strong>lat_column</strong> (<em>str</em>) – Name of the column in the DataFrame containing latitudinal coordinates.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame with NaN values interpolated using Ordinary Kriging.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.fill_na_with_knn">
+<span class="sig-name descname"><span class="pre">fill_na_with_knn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lon'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.fill_na_with_knn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.fill_na_with_knn" title="Permalink to this definition"></a></dt>
+<dd><p>Fills missing values in a DataFrame using K-Nearest Neighbors Regression.</p>
+<p>This function fills missing values in a DataFrame using K-Nearest Neighbors Regression, which
+considers the longitude and latitude columns to predict the missing values for other columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pandas.DataFrame</em>) – The input DataFrame with missing values.</p></li>
+<li><p><strong>lon_col</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the column representing longitude. Defaults to ‘lon’.</p></li>
+<li><p><strong>lat_col</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the column representing latitude. Defaults to ‘lat’.</p></li>
+<li><p><strong>n_neighbors</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of neighbors to use for the K-Nearest Neighbors Regression.
+Defaults to 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The DataFrame with missing values filled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+<span class="gp">... </span>    <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filled_df</span> <span class="o">=</span> <span class="n">fill_na_with_knn</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">filled_df</span><span class="p">)</span>
+<span class="go">lon  lat  value</span>
+<span class="go">0  1.0  4.0    7.0</span>
+<span class="go">1  2.0  5.0    8.0</span>
+<span class="go">2  3.0  6.0    9.0</span>
+<span class="go">3  2.0  5.0    8.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.check_missing_values">
+<span class="sig-name descname"><span class="pre">check_missing_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.check_missing_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.check_missing_values" title="Permalink to this definition"></a></dt>
+<dd><p>Check and report on missing values in the provided DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>DataFrame</strong> (<em>pandas.DataFrame</em>) – The input DataFrame to check for missing values.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This method only prints information about missing values and doesn’t return anything.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.preprocess_X_data">
+<span class="sig-name descname"><span class="pre">preprocess_X_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lon'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:4326'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rename_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'NAME':</span> <span class="pre">'site'}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.preprocess_X_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.preprocess_X_data" title="Permalink to this definition"></a></dt>
+<dd><p>Preprocesses the explanatory variables data for species distribution modeling.</p>
+<p>The method performs several preprocessing steps including reading data, filtering columns, dropping duplicates,
+handling missing values through kriging, converting coordinate systems, normalizing the data, and one-hot encoding categorical variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_data_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the folder containing the explanatory variable data. Defaults to <cite>self.X_data_folder</cite>.</p></li>
+<li><p><strong>processing_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the folder used for storing processed data. Defaults to <cite>self.processing_folder</cite>.</p></li>
+<li><p><strong>lon_column</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name for longitude. Defaults to ‘lon’.</p></li>
+<li><p><strong>lat_column</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name for latitude. Defaults to ‘lat’.</p></li>
+<li><p><strong>from_crs</strong> (<em>str</em><em>, </em><em>optional</em>) – Coordinate Reference System of the original data. Defaults to “EPSG:4326”.</p></li>
+<li><p><strong>to_crs</strong> (<em>str</em><em>, </em><em>optional</em>) – Coordinate Reference System to convert the data into. Defaults to None.</p></li>
+<li><p><strong>rename_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary to rename specific columns. Defaults to {‘NAME’: ‘site’}.</p></li>
+<li><p><strong>columns</strong> (<em>list</em><em>, </em><em>optional</em>) – List of columns to read from the CSV file. Defaults to None.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, outputs intermediate status messages. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the processed data as a DataFrame.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.interpolate_point_to_raster">
+<span class="sig-name descname"><span class="pre">interpolate_point_to_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:4326'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lon'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.interpolate_point_to_raster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.interpolate_point_to_raster" title="Permalink to this definition"></a></dt>
+<dd><p>Interpolates point-based data to a raster grid, optionally within a specified boundary.</p>
+<p>This function reads the point-based spatial data, interpolates it using Ordinary Kriging, and then exports it to a raster file.
+It also allows for specifying a boundary within which the interpolation is to be done.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_data_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the folder containing the point-based data. Defaults to <cite>self.X_data_folder</cite>.</p></li>
+<li><p><strong>columns</strong> (<em>list</em><em>, </em><em>optional</em>) – List of columns to read from the data. Defaults to None.</p></li>
+<li><p><strong>from_crs</strong> (<em>str</em><em>, </em><em>optional</em>) – Coordinate Reference System of the original data. Defaults to “EPSG:4326”.</p></li>
+<li><p><strong>to_crs</strong> (<em>str</em><em>, </em><em>optional</em>) – Coordinate Reference System to convert the data into. Defaults to None.</p></li>
+<li><p><strong>lon_column</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name for longitude. Defaults to ‘lon’.</p></li>
+<li><p><strong>lat_column</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name for latitude. Defaults to ‘lat’.</p></li>
+<li><p><strong>output_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the folder where the raster files will be saved. Defaults to <cite>self.processing_folder</cite>.</p></li>
+<li><p><strong>processing_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the processing folder. Defaults to <cite>self.processing_folder</cite>.</p></li>
+<li><p><strong>grid_resolution</strong> (<em>float</em><em>, </em><em>optional</em>) – Grid resolution for raster files in decimal degrees. Defaults to 0.25.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If no boundary file is found in the provided folder.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.day_to_datetime">
+<span class="sig-name descname"><span class="pre">day_to_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">datetime.datetime(2021,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.day_to_datetime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.day_to_datetime" title="Permalink to this definition"></a></dt>
+<dd><p>Convert day columns in the DataFrame to datetime format.</p>
+<dl class="simple">
+<dt>Args:pri</dt><dd><p>df (pd.DataFrame): The input DataFrame containing day columns.
+base_date (datetime, optional): The base date from which to calculate the actual dates. Defaults to January 1, 2021.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame with day columns converted to datetime format.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.del_time_dimension">
+<span class="sig-name descname"><span class="pre">del_time_dimension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.del_time_dimension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.del_time_dimension" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes the temporal dimension of a DataFrame by removing the ‘Day’ column and reordering NaNs within each ‘site’ group.</p>
+<p>The purpose of this is to handle the data collection technique of rotating sensors around the study area.
+This technique results in patchy data spatially and temporally.</p>
+<p>Dropping the time dimension essentially condenses the data into a single survey,
+containing recordings over space while disregarding when the recordings were made.</p>
+<p>This function takes a DataFrame with a ‘site’ column, a ‘Day’ column (time dimension), and one or more additional columns (presumed to be species data or similar). The function performs the following operations:</p>
+<ol class="arabic simple">
+<li><p>Identifies columns that are neither ‘site’ nor ‘Day’.</p></li>
+<li><p>Sorts each of these columns within each ‘site’ group to place NaNs at the end, while preserving the relative order of other values.</p></li>
+<li><p>Removes rows where all of the identified columns have NaN values.</p></li>
+<li><p>Removes rows where all columns (including ‘site’) are NaN.</p></li>
+<li><p>Deletes the ‘Day’ column.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pandas.DataFrame</em>) – The input DataFrame containing ‘site’, ‘Day’, and other relevant columns.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame with the time dimension removed and NaNs reorganized.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.check_balance_na">
+<span class="sig-name descname"><span class="pre">check_balance_na</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1</span> <span class="pre">Count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.check_balance_na"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.check_balance_na" title="Permalink to this definition"></a></dt>
+<dd><p>Check and summarize the balance and missing values within the DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – The input DataFrame.</p></li>
+<li><p><strong>sort_by</strong> (<em>str</em><em>, </em><em>optional</em>) – The column by which to sort the summary. Defaults to ‘1 Count’.</p></li>
+<li><p><strong>ascending</strong> (<em>bool</em><em>, </em><em>optional</em>) – Sorting order. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A summary DataFrame showing balance and missing data stats.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Notes: This function assumes binary data, so is not suitable if values have been filled with decimal values</dt><dd><p>(it is used before this point in the y data pipeline)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.filter_on_missing">
+<span class="sig-name descname"><span class="pre">filter_on_missing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.filter_on_missing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.filter_on_missing" title="Permalink to this definition"></a></dt>
+<dd><p>Filter the input DataFrame based on a missing percentage threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – The input DataFrame.</p></li>
+<li><p><strong>threshold</strong> (<em>int</em>) – The missing percentage threshold.</p></li>
+<li><p><strong>drop</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to drop columns exceeding the threshold from the original DataFrame. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Filtered DataFrame.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.filter_on_balance">
+<span class="sig-name descname"><span class="pre">filter_on_balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.filter_on_balance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.filter_on_balance" title="Permalink to this definition"></a></dt>
+<dd><p>Filter the input DataFrame based on either the count of presence records or the Balance Score.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – The input DataFrame.</p></li>
+<li><p><strong>threshold</strong> (<em>int</em>) – The threshold for either count of presence records or Balance Score.</p></li>
+<li><p><strong>score</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, uses Balance Score for filtering. Otherwise, uses count of presence records. Defaults to False.</p></li>
+<li><p><strong>drop</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to drop columns not meeting the threshold from the original DataFrame. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Filtered DataFrame.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.get_csv_paths">
+<span class="sig-name descname"><span class="pre">get_csv_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species_filepath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.get_csv_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.get_csv_paths" title="Permalink to this definition"></a></dt>
+<dd><p>Get a list of filepaths of CSV files that contain any of the species in the given list.</p>
+<p>Parameters:
+- species_filepath (str): The path to the folder containing the CSV files.
+- species_list (list, optional): A list of species to filter the CSV files by. If None, reads all CSV files.</p>
+<p>Returns:
+- List[str]: A list of filepaths of the relevant CSV files.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.preprocess_y_data">
+<span class="sig-name descname"><span class="pre">preprocess_y_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">balance_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">del_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.preprocess_y_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.preprocess_y_data" title="Permalink to this definition"></a></dt>
+<dd><p>Preprocesses CSV data files containing species observation data based on the folder they reside in and returns a single processed DataFrame.</p>
+<p>This method is designed to handle specific CSV data files located within folders.
+The preprocessing applied to the data includes applying missing data thresholds, balance thresholds, and optionally deleting the time dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the directory where the data folders are located.
+If not provided, the method retrieves a default path stored within the class.</p></li>
+<li><p><strong>species_list</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of species names to be included in the processed DataFrame.
+If not provided, all species found in the CSV files will be included.</p></li>
+<li><p><strong>missing_threshold</strong> (<em>int</em><em>, </em><em>optional</em>) – Percentage threshold to filter out columns with missing data
+greater than this threshold. Defaults to 0.</p></li>
+<li><p><strong>balance_threshold</strong> (<em>int</em><em>, </em><em>optional</em>) – Threshold to filter out columns based on the balance score.
+Defaults to 20.</p></li>
+<li><p><strong>del_time</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag indicating whether to delete the time dimension. Defaults to True.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag indicating whether to print informational messages during processing. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A processed DataFrame containing the concatenated and cleaned data from all the input CSV files.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Key Functionalities:</dt><dd><ul class="simple">
+<li><p>Reads CSV files from a given directory and applies specific preprocessing such as missing data and balance thresholds.</p></li>
+<li><p>Optionally removes the time dimension if del_time is True.</p></li>
+<li><p>Aggregates and concatenates all the processed data.</p></li>
+<li><p>Can filter data by species if a species_list is provided.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Removes data with fewer examples than the balance_threshold to prevent errors when trying to split the data into train/validation/test datasets.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">preprocess_y_data</span><span class="p">(</span><span class="n">missing_threshold</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">balance_threshold</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">folder_path</span><span class="o">=</span><span class="s1">&#39;./data/folders&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.join_X_to_y">
+<span class="sig-name descname"><span class="pre">join_X_to_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'site'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.join_X_to_y"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.join_X_to_y" title="Permalink to this definition"></a></dt>
+<dd><p>Merges two dataframes based on the “on” column and identifies unmatched keys.</p>
+<p>Parameters:
+- x: DataFrame containing environmental data.
+- y: DataFrame containing species data.
+- output_folder: Path to the directory where the unmatched keys csv will be saved.</p>
+<p>Returns:
+- DataFrame: Merged dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.fill_na_with_xgboost">
+<span class="sig-name descname"><span class="pre">fill_na_with_xgboost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lon'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'isPresent'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.fill_na_with_xgboost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.fill_na_with_xgboost" title="Permalink to this definition"></a></dt>
+<dd><p>Uses XGBoost to predict and fill NA values for specific columns based on coordinates.</p>
+<p>This function leverages the power of the XGBoost algorithm to make predictions for the columns
+in the DataFrame containing NA values. The primary predictors for these columns are coordinates.</p>
+<p>Parameters:
+- df (pd.DataFrame): The input dataframe that contains the data with potential NA values.
+- lon_col (str): The name of the column that represents the longitude. Defaults to ‘lon’.
+- lat_col (str): The name of the column that represents the latitude. Defaults to ‘lat’.
+- pattern (str): The pattern or substring to search in the columns to identify which ones need processing. Defaults to ‘isPresent’.</p>
+<p>Returns:
+- pd.DataFrame: A DataFrame with NA values predicted and filled using XGBoost.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only columns that have the provided pattern in their name, are numerical, and contain NA values
+will be processed. Ensure that the DataFrame has at least some non-NA values in these columns for
+the model to be trained and make predictions.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.fill_na_with_avg">
+<span class="sig-name descname"><span class="pre">fill_na_with_avg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'isPresent'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.fill_na_with_avg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.fill_na_with_avg" title="Permalink to this definition"></a></dt>
+<dd><p>Fills NA values for specific columns in a DataFrame with the average of their respective site’s values.</p>
+<p>This function replaces NA values in columns containing the ‘isPresent’ pattern with the average of
+non-NA values for that column within each site. This operation is done in a site-specific manner and
+does not affect sites that have no records for a species.</p>
+<p>Parameters:
+- df (pd.DataFrame): The DataFrame containing the data with potential NA values.</p>
+<p>Returns:
+- pd.DataFrame: A DataFrame with NA values replaced by the site-specific average for columns with the ‘isPresent’ pattern.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only columns that contain the pattern and are of a numeric datatype are processed.
+Ensure that the DataFrame has the ‘site’ column available as it is used for grouping data.
+Does not affect sites with no records for a species</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.xy_split">
+<span class="sig-name descname"><span class="pre">xy_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'isPresent'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.xy_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.xy_split" title="Permalink to this definition"></a></dt>
+<dd><p>Splits a DataFrame into two datasets based on the presence of a specified pattern in column names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – The DataFrame to be split.</p></li>
+<li><p><strong>pattern</strong> (<em>str</em><em>, </em><em>optional</em>) – The string pattern to split columns on. Defaults to ‘isPresent’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Two DataFrames - X containing columns without the pattern and y containing columns with the pattern.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame, pd.DataFrame</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure that the DataFrame does not contain columns other than features and labels.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.multi_label_split">
+<span class="sig-name descname"><span class="pre">multi_label_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.multi_label_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.multi_label_split" title="Permalink to this definition"></a></dt>
+<dd><p>Performs a multilabel stratified split of the dataset into train, validation, and test sets.</p>
+<p>This function ensures that each label (species) is fairly represented in each set to maintain
+consistency in label distributions across the splits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>pd.DataFrame</em>) – Feature matrix.</p></li>
+<li><p><strong>y</strong> (<em>pd.DataFrame</em>) – Label matrix.</p></li>
+<li><p><strong>val_size</strong> (<em>float</em><em>, </em><em>optional</em>) – Proportion of the dataset to include in the validation set. Defaults to 0.15.</p></li>
+<li><p><strong>test_size</strong> (<em>float</em><em>, </em><em>optional</em>) – Proportion of the dataset to include in the test set. Defaults to 0.15.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns six DataFrames - X_train, y_train, X_val, y_val, X_test, and y_test.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <cite>val_size</cite> and <cite>test_size</cite> combined are greater than 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.balance_dataset_MLSMOTE">
+<span class="sig-name descname"><span class="pre">balance_dataset_MLSMOTE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.balance_dataset_MLSMOTE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.balance_dataset_MLSMOTE" title="Permalink to this definition"></a></dt>
+<dd><p>Balance a multi-label dataset using Multi-label SMOTE.</p>
+<p>This function uses the Multi-label Synthetic Minority Over-sampling Technique (SMOTE)
+to generate synthetic samples and balance the dataset for multi-label classification problems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>pd.DataFrame</em>) – The feature matrix of the training dataset.</p></li>
+<li><p><strong>y_train</strong> (<em>pd.DataFrame</em>) – The label matrix of the training dataset.</p></li>
+<li><p><strong>n_sample</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of synthetic samples to be generated. Defaults to 100.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The balanced feature and label matrices of the training dataset.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame, pd.DataFrame</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The function checks for the presence of the ‘mlsmote.py’ file, and downloads it if not found.
+Ensure you have appropriate permissions and internet connectivity before using this function.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.export_data_to_pickle">
+<span class="sig-name descname"><span class="pre">export_data_to_pickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.export_data_to_pickle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.export_data_to_pickle" title="Permalink to this definition"></a></dt>
+<dd><p>Export training, testing, and validation datasets to pickle files.</p>
+<p>This function takes in data arrays for training, testing, and validation
+both for features (X) and labels (y) and serializes them into pickle files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>pd.DataFrame</em><em> or </em><em>np.array</em>) – Training features.</p></li>
+<li><p><strong>X_test</strong> (<em>pd.DataFrame</em><em> or </em><em>np.array</em>) – Testing features.</p></li>
+<li><p><strong>X_val</strong> (<em>pd.DataFrame</em><em> or </em><em>np.array</em>) – Validation features.</p></li>
+<li><p><strong>y_train</strong> (<em>pd.Series</em><em> or </em><em>np.array</em>) – Training labels.</p></li>
+<li><p><strong>y_test</strong> (<em>pd.Series</em><em> or </em><em>np.array</em>) – Testing labels.</p></li>
+<li><p><strong>y_val</strong> (<em>pd.Series</em><em> or </em><em>np.array</em>) – Validation labels.</p></li>
+<li><p><strong>export_folder</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the folder where pickle files will be saved.
+Defaults to <cite>self.model_in_folder</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>All the input datasets are returned as they were received, in the same order.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Make sure the export_folder exists or is writable, otherwise, the function will fail.</p></li>
+<li><p>The function will overwrite any existing files with the same names in the <cite>export_folder</cite>.</p></li>
+</ul>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">export_data_to_pickle</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="s2">&quot;./data/pickle_folder&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.processing.Process.main_pipeline">
+<span class="sig-name descname"><span class="pre">main_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preprocessed_X</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocessed_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synth_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/processing.html#Process.main_pipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.processing.Process.main_pipeline" title="Permalink to this definition"></a></dt>
+<dd><p>Main data processing pipeline to preprocess, impute, balance and export data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>preprocessed_X</strong> (<em>pd.DataFrame</em><em>, </em><em>optional</em>) – Preprocessed feature data. If not provided, will be preprocessed using default settings.</p></li>
+<li><p><strong>preprocessed_y</strong> (<em>pd.DataFrame</em><em>, </em><em>optional</em>) – Preprocessed label data. If not provided, will be preprocessed using default settings.</p></li>
+<li><p><strong>synth_count</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of synthetic samples to generate using multi-label SMOTE. Defaults to 100.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not to display detailed logs. Defaults to True.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Side Effects:</dt><dd><ul class="simple">
+<li><p>Creates plots visualizing missing data.</p></li>
+<li><p>Exports the processed datasets to pickle files.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – When issues occur during SMOTE, like having zero samples.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">main_pipeline</span><span class="p">(</span><span class="n">preprocessed_X</span><span class="o">=</span><span class="n">my_X_data</span><span class="p">,</span> <span class="n">preprocessed_y</span><span class="o">=</span><span class="n">my_y_data</span><span class="p">,</span> <span class="n">synth_count</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="explorer.html" class="btn btn-neutral float-left" title="explorer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modeling.html" class="btn btn-neutral float-right" title="modeling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Will Armstrong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

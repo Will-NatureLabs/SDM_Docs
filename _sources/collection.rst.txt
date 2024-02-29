@@ -1,0 +1,6 @@
+collection
+==========
+
+.. automodule:: species_distribution_modeling.collection
+   :members:
+

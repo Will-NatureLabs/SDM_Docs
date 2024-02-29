@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>explorer &mdash; Species Distribution Modeling 01/09/2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=c5a0e6c8"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="processing" href="processing.html" />
+    <link rel="prev" title="collection" href="collection.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Species Distribution Modeling
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main_module.html">main_module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="collection.html">collection</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">explorer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore"><code class="docutils literal notranslate"><span class="pre">Explore</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore.__init__"><code class="docutils literal notranslate"><span class="pre">Explore.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore.create_species_map"><code class="docutils literal notranslate"><span class="pre">Explore.create_species_map()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore.plot_covariance_matrix"><code class="docutils literal notranslate"><span class="pre">Explore.plot_covariance_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore.plot_missing_values_heatmap"><code class="docutils literal notranslate"><span class="pre">Explore.plot_missing_values_heatmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore.display_value_counts"><code class="docutils literal notranslate"><span class="pre">Explore.display_value_counts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore.get_unique_values"><code class="docutils literal notranslate"><span class="pre">Explore.get_unique_values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore.plot_histogram"><code class="docutils literal notranslate"><span class="pre">Explore.plot_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#species_distribution_modeling.explorer.Explore.boxplot_all_columns"><code class="docutils literal notranslate"><span class="pre">Explore.boxplot_all_columns()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#species_distribution_modeling.explorer.test_boxplot_all_columns"><code class="docutils literal notranslate"><span class="pre">test_boxplot_all_columns()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#species_distribution_modeling.explorer.plot_gdf"><code class="docutils literal notranslate"><span class="pre">plot_gdf()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modeling.html">modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">utils</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Species Distribution Modeling</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">explorer</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/explorer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-species_distribution_modeling.explorer">
+<span id="explorer"></span><h1>explorer<a class="headerlink" href="#module-species_distribution_modeling.explorer" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">species_distribution_modeling.explorer.</span></span><span class="sig-name descname"><span class="pre">Explore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utils</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_data_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processing_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_in_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_out_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utils</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore.create_species_map">
+<span class="sig-name descname"><span class="pre">create_species_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lon'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'_isPresent'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore.create_species_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore.create_species_map" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a map visualization of the presence of different species over time.
+Gives insight into the survey pattern and the recordings of the raw data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species</strong> (<em>list</em><em>, </em><em>optional</em>) – List of species to filter by, case insensitive and returns partial matches. If None, all species are included.</p></li>
+<li><p><strong>time_column</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name in DataFrame representing time. Defaults to ‘Day’.</p></li>
+<li><p><strong>lon_column</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name in DataFrame representing longitude. Defaults to ‘lon’.</p></li>
+<li><p><strong>lat_column</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name in DataFrame representing latitude. Defaults to ‘lat’.</p></li>
+<li><p><strong>summarize</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, summarizes the species presence data before plotting. Defaults to False.</p></li>
+<li><p><strong>endure</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, no duration is set for the animation. If False, a duration of ‘P1D’ is set. Defaults to True.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, prints debug information. Defaults to True.</p></li>
+<li><p><strong>pattern</strong> (<em>str</em><em>, </em><em>optional</em>) – String pattern used to identify columns containing species presence information. Defaults to ‘_isPresent’.</p></li>
+<li><p><strong>download</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the generated map will be downloaded as an HTML file. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Folium map object with the presence of different species visualized.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>folium.Map</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">create_species_map</span><span class="p">(</span><span class="n">species</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Eleutherodactylus_coqui&#39;</span><span class="p">,</span> <span class="s1">&#39;Margarops_fuscatus&#39;</span><span class="p">],</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore.plot_covariance_matrix">
+<span class="sig-name descname"><span class="pre">plot_covariance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(50,</span> <span class="pre">50)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore.plot_covariance_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore.plot_covariance_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the covariance matrix of the input dataframe as a heatmap.</p>
+<p>Parameters:
+- env_df: pandas.DataFrame, the input dataframe
+- figsize: tuple(int, int), the figure size of the heatmap
+- text_size: int, the text size of the annotations in the heatmap</p>
+<p>Returns:
+- None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore.plot_missing_values_heatmap">
+<span class="sig-name descname"><span class="pre">plot_missing_values_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_data_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(50,</span> <span class="pre">50)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore.plot_missing_values_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore.plot_missing_values_heatmap" title="Permalink to this definition"></a></dt>
+<dd><p>Plots a heatmap of missing values in the input dataframe.</p>
+<p>Parameters:
+- class_df: pandas.DataFrame, the input dataframe</p>
+<p>Returns:
+- None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore.display_value_counts">
+<span class="sig-name descname"><span class="pre">display_value_counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore.display_value_counts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore.display_value_counts" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the frequency of unique values in a specific column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame to be explored.</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – Column for which value counts should be displayed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Frequency of unique values in the specified column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore.get_unique_values">
+<span class="sig-name descname"><span class="pre">get_unique_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore.get_unique_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore.get_unique_values" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the unique values in a specific column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame to be explored.</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – Column for which unique values should be displayed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Unique values in the specified column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore.plot_histogram">
+<span class="sig-name descname"><span class="pre">plot_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore.plot_histogram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore.plot_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plots a histogram for a specific column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame to be explored.</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – Column for which histogram should be plotted.</p></li>
+<li><p><strong>bins</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of bins for the histogram. Defaults to 10.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.Explore.boxplot_all_columns">
+<span class="sig-name descname"><span class="pre">boxplot_all_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize_per_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">6)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'skyblue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#Explore.boxplot_all_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.Explore.boxplot_all_columns" title="Permalink to this definition"></a></dt>
+<dd><p>Creates box plots for all numeric columns of a DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – The DataFrame to plot.</p></li>
+<li><p><strong>figsize_per_plot</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The figure size for each individual plot. Defaults to (4, 6).</p></li>
+<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – The color of the box plots. Defaults to ‘skyblue’.</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em><em>, </em><em>optional</em>) – The fontsize of the title. Defaults to 12.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Displays the box plots.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boxplot_all_columns</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.test_boxplot_all_columns">
+<span class="sig-prename descclassname"><span class="pre">species_distribution_modeling.explorer.</span></span><span class="sig-name descname"><span class="pre">test_boxplot_all_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">explorer_instance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mock_df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#test_boxplot_all_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.test_boxplot_all_columns" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="species_distribution_modeling.explorer.plot_gdf">
+<span class="sig-prename descclassname"><span class="pre">species_distribution_modeling.explorer.</span></span><span class="sig-name descname"><span class="pre">plot_gdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basemap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'attribution':</span> <span class="pre">'(C)</span> <span class="pre">OpenStreetMap</span> <span class="pre">contributors',</span> <span class="pre">'html_attribution':</span> <span class="pre">'&amp;copy;</span> <span class="pre">&lt;a</span> <span class="pre">href=&quot;https://www.openstreetmap.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt;</span> <span class="pre">contributors',</span> <span class="pre">'max_zoom':</span> <span class="pre">19,</span> <span class="pre">'name':</span> <span class="pre">'OpenStreetMap.Mapnik',</span> <span class="pre">'url':</span> <span class="pre">'https://tile.openstreetmap.org/{z}/{x}/{y}.png'}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/species_distribution_modeling/explorer.html#plot_gdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#species_distribution_modeling.explorer.plot_gdf" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="collection.html" class="btn btn-neutral float-left" title="collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="processing.html" class="btn btn-neutral float-right" title="processing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Will Armstrong.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
